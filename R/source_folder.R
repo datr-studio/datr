@@ -1,9 +1,9 @@
-#' source_folder
+#' Recursively source all R files in a folder and its subfolders
 #'
 #' Recursively source a folder, loading all files with .R ext into the global environment.
 #'
 #' @param folder the directory to source.
-#' @param silent logical. If TRUE, information is given about the number of files sourced. Defaults to FALSE
+#' @param silent logical. If `TRUE`, information is given about the number of files sourced. Defaults to `FALSE`
 #'
 #' @export
 #' @examples

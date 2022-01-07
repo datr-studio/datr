@@ -2,14 +2,14 @@
 % Please edit documentation in R/source_folder.R
 \name{source_folder}
 \alias{source_folder}
-\title{source_folder}
+\title{Recursively source all R files in a folder and its subfolders}
 \usage{
 source_folder(folder, silent = FALSE)
 }
 \arguments{
 \item{folder}{the directory to source.}
 
-\item{silent}{logical. If TRUE, information is given about the number of files sourced. Defaults to FALSE}
+\item{silent}{logical. If \code{TRUE}, information is given about the number of files sourced. Defaults to \code{FALSE}}
 }
 \description{
 Recursively source a folder, loading all files with .R ext into the global environment.
