@@ -10,13 +10,13 @@
 #' \dontrun{
 #' source_folder("path/to/myfolder")
 #' }
-source_folder <- function(folder, silent = FALSE) {
+source_folder <- function(folder, silent = TRUE) {
   stopifnot(is.character(folder), length(folder) == 1, dir.exists(folder))
   paths <- list.files(folder, full.names = T)
   n <- 0
   for (path in paths) {
     if (dir.exists(path)) {
-      source_folder(path)
+      source_folder(path, silent)
     } else if (stringr::str_detect(path, pattern = "[a-z|A-Z|_]+\\.R$")) {
       source(path)
       n <- n + 1

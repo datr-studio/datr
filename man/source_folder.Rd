@@ -4,7 +4,7 @@
 \alias{source_folder}
 \title{Recursively source all R files in a folder and its subfolders}
 \usage{
-source_folder(folder, silent = FALSE)
+source_folder(folder, silent = TRUE)
 }
 \arguments{
 \item{folder}{the directory to source.}
