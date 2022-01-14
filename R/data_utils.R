@@ -17,3 +17,23 @@
 add_source <- function(data, source_name) {
   data$source <- source_name
 }
+
+
+
+#' Add Proportion
+#'
+#' Adds a proportion column to dataframe
+#'
+#' @param data A dataframe
+#' @param by column to use for proportions, defaults to `n`.
+#'
+#' @importFrom dplyr mutate
+#'
+#' @export
+#'
+#' @return RETURN_DESCRIPTION
+#' @examples
+#' # ADD_EXAMPLES_HERE
+add_prop <- function(data, by = "n") {
+  dplyr::mutate(data, prop = .data[[by]] / sum(.data[[by]]))
+}
