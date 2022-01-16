@@ -16,6 +16,7 @@
 #' add_source(mtcars, "R")
 add_source <- function(data, source_name) {
   data$source <- source_name
+  data
 }
 
 
@@ -35,5 +36,6 @@ add_source <- function(data, source_name) {
 #' @examples
 #' # ADD_EXAMPLES_HERE
 add_prop <- function(data, by = "n") {
-  dplyr::mutate(data, prop = .data[[by]] / sum(.data[[by]]))
+  data <- dplyr::mutate(data, prop = .data[[by]] / sum(.data[[by]]))
+  data
 }
