@@ -12,5 +12,6 @@ phrases <- c(
   "Let's get shit done!",
   "You are one determined motherfucker",
   "Go be a badass",
-  "Patience, ruthless determination, and power."
+  "Patience, ruthless determination, and power.",
+  "True love is a precious gift."
 )

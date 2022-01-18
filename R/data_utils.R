@@ -63,19 +63,17 @@ add_prop <- function(data, by = "n") {
 #' @export
 #'
 #' @return Numeric vector
-#' @examples examples
-relative_change <- function(before, after, digits = NULL, as_perc = FALSE, as_str = FALSE) {
-  stopifnot(is.numeric(before), is.numeric(after))
+#' @examples
+#' a <- 1:5
+#' b <- 5:10
+#' relative_change(a, b)
+relative_change <- function(before, after, digits = Inf, as_perc = FALSE, as_str = FALSE) {
+  stopifnot(is.numeric(before), is.numeric(after), is.numeric(digits))
   res <- (after - before) / before
-  if (as_perc) {
-    res <- res * 100
-  }
-  if (!is.null(digits)) {
-    stopifnot(is.numeric(digits))
-    res <- round(res, digits)
-  }
   if (as_str) {
-    res <- paste0(res, "%")
+    res <- paste0(round(res * 100, digits), "%")
+  } else if (as_perc) {
+    res <- round(res * 100, Inf)
   }
   res
 }

@@ -4,7 +4,7 @@
 \alias{relative_change}
 \title{Calculate relative change}
 \usage{
-relative_change(before, after, digits = NULL, as_perc = FALSE, as_str = FALSE)
+relative_change(before, after, digits = Inf, as_perc = FALSE, as_str = FALSE)
 }
 \arguments{
 \item{before, after}{Numeric vectors.}
@@ -29,5 +29,7 @@ Note that rounding is performed after conversion to percentage, if both
 options are selected.
 }
 \examples{
-examples
+a <- 1:5
+b <- 5:10
+relative_change(a, b)
 }
