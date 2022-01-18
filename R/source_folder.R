@@ -2,17 +2,19 @@
 #'
 #' Recursively source a folder, loading all files with .R ext into the global environment.
 #'
-#' @param folder the directory to source.
-#' @param silent logical. If `TRUE`, information is given about the number of files sourced. Defaults to `FALSE`
+#' @param folder The directory to source.
+#' @param silent Logical. If `TRUE`, information is given about the number of files sourced. Defaults to `FALSE`
+#' @param pattern An optional regex pattern to use to filter the path.
+#' @param excl An optional regex pattern to use to exclude files or folders from the search.
 #'
 #' @export
-#' @examples
-#' \dontrun{
-#' source_folder("path/to/myfolder")
-#' }
-source_folder <- function(folder, silent = TRUE) {
+#'
+source_folder <- function(folder, silent = TRUE, pattern = NULL, excl = NULL) {
   stopifnot(is.character(folder), length(folder) == 1, dir.exists(folder))
-  paths <- list.files(folder, full.names = T)
+  paths <- list.files(folder, full.names = T, pattern = pattern)
+  if (!is.null(excl)) {
+    paths <- paths[stringr::str_detect(paths, paste0(folder, "\\/", excl), negate = TRUE)]
+  }
   n <- 0
   for (path in paths) {
     if (dir.exists(path)) {

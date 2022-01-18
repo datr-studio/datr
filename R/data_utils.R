@@ -36,6 +36,7 @@ add_source <- function(data, source_name) {
 #' @examples
 #' # ADD_EXAMPLES_HERE
 add_prop <- function(data, by = "n") {
+  .data <- NULL
   data <- dplyr::mutate(data, prop = .data[[by]] / sum(.data[[by]]))
   data
 }
@@ -56,6 +57,7 @@ add_prop <- function(data, by = "n") {
 #' @param after Numeric vector of after values.
 #' @param digits Number of digits to round to, if desired.
 #' @param as_perc Return proportion as percentage (i.e. * 100).
+#' @param as_str Return as a character vector with percent symbol.
 #'
 #'
 #' @export

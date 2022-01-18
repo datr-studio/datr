@@ -4,18 +4,30 @@
 \alias{relative_change}
 \title{Calculate relative change}
 \usage{
-relative_change(before, after)
+relative_change(before, after, digits = NULL, as_perc = FALSE, as_str = FALSE)
 }
 \arguments{
-\item{before}{DESCRIPTION.}
+\item{before}{Numeric vector of before values.}
 
-\item{after}{DESCRIPTION.}
+\item{after}{Numeric vector of after values.}
+
+\item{digits}{Number of digits to round to, if desired.}
+
+\item{as_perc}{Return proportion as percentage (i.e. * 100).}
+
+\item{as_str}{Return as a character vector with percent symbol.}
 }
 \value{
 Numeric vector
 }
 \description{
 \eqn{\frac{after-before}{before}}
+}
+\details{
+\code{relative_change()} can also optionally round, convert to percentage,
+and even convert to str in the form of 'XX\%', if required.
+
+Note that rounding is performed after conversion to percentage, if both options are selected.
 }
 \examples{
 x <- 1:10

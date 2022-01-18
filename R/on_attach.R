@@ -1,8 +1,9 @@
 #' @import crayon
+#' @importFrom stats runif
 .onAttach <- function(libname, pkgname) { # nolint
 
-  cat(crayon::cyan(phrases[round(runif(1, 1, length(phrases)))]))
-  cat(crayon::blurred$italic("\nHave you activated a stretch timer?"))
+  packageStartupMessage(crayon::blue(phrases[round(stats::runif(1, 1, length(phrases)))]))
+  packageStartupMessage(crayon::silver$italic("Have you activated a stretch timer?"))
 }
 
 

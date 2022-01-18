@@ -14,8 +14,3 @@ source_folder(folder, silent = TRUE)
 \description{
 Recursively source a folder, loading all files with .R ext into the global environment.
 }
-\examples{
-\dontrun{
-source_folder("path/to/myfolder")
-}
-}

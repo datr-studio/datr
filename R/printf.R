@@ -6,6 +6,7 @@
 #' In short, use `$$` to signal a call to the crayon library. Calls can be nested with further single `$` symbols. Close the call with `$$x` (Optional for the final closing brace).
 #'
 #' @param string String to format.
+#' @param ... Additional arguments to pass on to glue.
 #'
 #' @import stringr
 #' @import crayon

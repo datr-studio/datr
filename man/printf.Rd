@@ -4,10 +4,12 @@
 \alias{printf}
 \title{A fancy print function}
 \usage{
-printf(string)
+printf(string, ...)
 }
 \arguments{
 \item{string}{String to format.}
+
+\item{...}{Additional arguments to pass on to glue.}
 }
 \description{
 \code{printf()} is reminiscent of python's f-strings, where prefacing a string with \code{f} enables the user to evaluate code within braces before printing to the console. This functionality already exists in the glue package; so this is wrapper around that. However, what it also brings is an additional wrapper around the crayon package at the same time. You can therefore colour and evaluate print statements easily.
