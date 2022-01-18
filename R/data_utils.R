@@ -46,15 +46,15 @@ add_prop <- function(data, by = "n") {
 
 #' Calculate relative change
 #'
-#' \eqn{\frac{after-before}{before}}
+#' \deqn{(b-a)/b}
 #'
 #' `relative_change()` can also optionally round, convert to percentage,
 #' and even convert to str in the form of 'XX%', if required.
 #'
-#' Note that rounding is performed after conversion to percentage, if both options are selected.
+#' Note that rounding is performed after conversion to percentage, if both
+#' options are selected.
 #'
-#' @param before Numeric vector of before values.
-#' @param after Numeric vector of after values.
+#' @param before,after Numeric vectors.
 #' @param digits Number of digits to round to, if desired.
 #' @param as_perc Return proportion as percentage (i.e. * 100).
 #' @param as_str Return as a character vector with percent symbol.
@@ -63,10 +63,7 @@ add_prop <- function(data, by = "n") {
 #' @export
 #'
 #' @return Numeric vector
-#' @examples
-#' x <- 1:10
-#' y <- x * 2
-#' relative_change(x, y)
+#' @examples examples
 relative_change <- function(before, after, digits = NULL, as_perc = FALSE, as_str = FALSE) {
   stopifnot(is.numeric(before), is.numeric(after))
   res <- (after - before) / before

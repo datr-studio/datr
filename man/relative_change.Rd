@@ -7,9 +7,7 @@
 relative_change(before, after, digits = NULL, as_perc = FALSE, as_str = FALSE)
 }
 \arguments{
-\item{before}{Numeric vector of before values.}
-
-\item{after}{Numeric vector of after values.}
+\item{before, after}{Numeric vectors.}
 
 \item{digits}{Number of digits to round to, if desired.}
 
@@ -21,16 +19,15 @@ relative_change(before, after, digits = NULL, as_perc = FALSE, as_str = FALSE)
 Numeric vector
 }
 \description{
-\eqn{\frac{after-before}{before}}
+\deqn{(b-a)/b}
 }
 \details{
 \code{relative_change()} can also optionally round, convert to percentage,
 and even convert to str in the form of 'XX\%', if required.
 
-Note that rounding is performed after conversion to percentage, if both options are selected.
+Note that rounding is performed after conversion to percentage, if both
+options are selected.
 }
 \examples{
-x <- 1:10
-y <- x * 2
-relative_change(x, y)
+examples
 }

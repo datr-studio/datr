@@ -1,8 +1,8 @@
 Package: commonr
-Title: What the Package Does (One Line, Title Case)
+Title: A colletion of common R functions that make life sweeter
 Version: 0.0.0.9000
 Authors@R: person("Josh", "Firth", , "drjoshfirth@gmailcom", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Description: `commonr` provides a suite of functions that are usable in just about every project. Functions include things like sourcing all files in a folder recursivel according to a pattern, eacy printing with fancy formating, and a host of other sweet goodies.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

@@ -4,32 +4,39 @@
 \alias{printf}
 \title{A fancy print function}
 \usage{
-printf(string, ...)
+printf(string)
 }
 \arguments{
-\item{string}{String to format.}
-
-\item{...}{Additional arguments to pass on to glue.}
+\item{string}{String to format}
 }
 \description{
-\code{printf()} is reminiscent of python's f-strings, where prefacing a string with \code{f} enables the user to evaluate code within braces before printing to the console. This functionality already exists in the glue package; so this is wrapper around that. However, what it also brings is an additional wrapper around the crayon package at the same time. You can therefore colour and evaluate print statements easily.
+\code{printf()} provides an easy way to print fancy output without needing to
+splice up your string with different function calls.
 }
 \details{
-\subsection{How to use printf}{
+\code{printf()} provides a simultaneous wrapper around both the \code{\link[glue]{glue}} and
+\code{\link[crayon]{crayon}} libraries in a single string. This enables you to specify formtating (using crayons'
+colour and emphasis functions) whilst also combining text with code to evaluation
+(using glue).
+}
+\section{How to use printf}{
 
-In short, use \verb{$$} to signal a call to the crayon library. Calls can be nested with further single \code{$} symbols. Close the call with \verb{$$x} (Optional for the final closing brace).
+In short, use \verb{$$} to signal a call to the crayon library. Calls can be nested with
+further single \code{$} symbols. Close the call with \verb{$$} (Optional for the final closing brace).
+
+Meanwhile, anything inside of curly braces (e.g. \{ \}) is evaluated first, enabling you
+to use variables, function calls, and basically anything you can do in short R code.
 }
-}
+
 \examples{
 var1 <- 1
 var2 <- 2
 var3 <- "world"
 var4 <- "this example"
 
-
 printf("{var1} added to {var2} equals {var1 + var2}")
-printf("Hello $$strikethrough mum $$x world!")
+printf("Hello $$strikethrough mum $$ world!")
 printf("$$blue this example shows that `printf()` will auto close final braces")
-printf("This example shows that you can $$cyan$bold combine $$x formating")
-printf("$$magenta$italic {var4} $$x $$green$underline brings it $$x $$blurred all together")
+printf("This example shows that you can $$cyan$bold combine $$ formating")
+printf("$$magenta$italic {var4} $$ $$green$underline brings it $$ $$blurred all together")
 }

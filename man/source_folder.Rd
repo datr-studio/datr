@@ -4,12 +4,16 @@
 \alias{source_folder}
 \title{Recursively source all R files in a folder and its subfolders}
 \usage{
-source_folder(folder, silent = TRUE)
+source_folder(folder, silent = TRUE, pattern = NULL, excl = NULL)
 }
 \arguments{
-\item{folder}{the directory to source.}
+\item{folder}{The directory to source.}
 
-\item{silent}{logical. If \code{TRUE}, information is given about the number of files sourced. Defaults to \code{FALSE}}
+\item{silent}{Logical. If \code{TRUE}, information is given about the number of files sourced. Defaults to \code{FALSE}}
+
+\item{pattern}{An optional regex pattern to use to filter the path.}
+
+\item{excl}{An optional regex pattern to use to exclude files or folders from the search.}
 }
 \description{
 Recursively source a folder, loading all files with .R ext into the global environment.
