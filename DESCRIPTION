@@ -16,3 +16,5 @@ Imports:
     stringr,
     crayon,
     stats
+URL: https://github.com/datr-studio/datr
+BugReports: https://github.com/datr-studio/datr/issues
