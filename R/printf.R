@@ -23,9 +23,9 @@
 #' printf("$$blue this example shows that `printf()` will auto close final braces")
 #' printf("This example shows that you can $$cyan$bold combine $$x formating")
 #' printf("$$magenta$italic {var4} $$x $$green$underline brings it $$x $$blurred all together")
-printf <- function(string) {
+printf <- function(string, ...) {
   # First Evaluate String as String
-  output <- glue::glue(string) %>%
+  output <- glue::glue(string, .envir = parent.frame(), ...) %>%
     stringr::str_split(" ", simplify = TRUE) %>%
     replace_with_f() %>%
     paste0(collapse = " ") %>%
