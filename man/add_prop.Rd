@@ -4,19 +4,30 @@
 \alias{add_prop}
 \title{Add Proportion}
 \usage{
-add_prop(data, by = "n")
+add_prop(.data, by = "n")
 }
 \arguments{
-\item{data}{A dataframe}
-
 \item{by}{column to use for proportions, defaults to \code{n}.}
+
+\item{data}{A dataframe}
 }
 \value{
-RETURN_DESCRIPTION
+A dataframe, with added prop column
 }
 \description{
 Adds a proportion column to dataframe
 }
 \examples{
-# ADD_EXAMPLES_HERE
+\dontrun{
+library(tidyverse)
+library(commonr)
+tibble(a = runif(1e3)) \%>\%
+  count(a > 0.5) \%>\%
+  add_prop()
+# A tibble: 2 × 3
+#   `a > 0.5`     n  prop
+#   <lgl>     <int> <dbl>
+# 1 FALSE       512 0.512
+# 2 TRUE        488 0.488
+}
 }

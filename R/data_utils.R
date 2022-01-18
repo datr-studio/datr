@@ -28,52 +28,29 @@ add_source <- function(data, source_name) {
 #' @param data A dataframe
 #' @param by column to use for proportions, defaults to `n`.
 #'
-#' @importFrom dplyr mutate
-#'
 #' @export
 #'
-#' @return RETURN_DESCRIPTION
+#' @return A dataframe, with added prop column
 #' @examples
-#' # ADD_EXAMPLES_HERE
+#' \dontrun{
+#' library(tidyverse)
+#' library(commonr)
+#' tibble(a = runif(1e3)) %>%
+#'   count(a > 0.5) %>%
+#'   add_prop()
+#' # A tibble: 2 × 3
+#' #   `a > 0.5`     n  prop
+#' #   <lgl>     <int> <dbl>
+#' # 1 FALSE       512 0.512
+#' # 2 TRUE        488 0.488
+#' }
 add_prop <- function(data, by = "n") {
-  .data <- NULL
-  data <- dplyr::mutate(data, prop = .data[[by]] / sum(.data[[by]]))
+  col_name <- ensure_unique(data, "prop")
+  data[col_name] <- data[[by]] / sum(data[[by]])
   data
 }
 
 
 
 
-#' Calculate relative change
-#'
-#' \deqn{(b-a)/b}
-#'
-#' `relative_change()` can also optionally round, convert to percentage,
-#' and even convert to str in the form of 'XX%', if required.
-#'
-#' Note that rounding is performed after conversion to percentage, if both
-#' options are selected.
-#'
-#' @param before,after Numeric vectors.
-#' @param digits Number of digits to round to, if desired.
-#' @param as_perc Return proportion as percentage (i.e. * 100).
-#' @param as_str Return as a character vector with percent symbol.
-#'
-#'
-#' @export
-#'
-#' @return Numeric vector
-#' @examples
-#' a <- 1:5
-#' b <- 5:10
-#' relative_change(a, b)
-relative_change <- function(before, after, digits = Inf, as_perc = FALSE, as_str = FALSE) {
-  stopifnot(is.numeric(before), is.numeric(after), is.numeric(digits))
-  res <- (after - before) / before
-  if (as_str) {
-    res <- paste0(round(res * 100, digits), "%")
-  } else if (as_perc) {
-    res <- round(res * 100, Inf)
-  }
-  res
-}
+ensure_unique <- function(data, x) ifelse(any(names(data) == x), paste0(x, "..1"), x)
