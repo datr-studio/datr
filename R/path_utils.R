@@ -13,8 +13,11 @@
 #' @export
 #'
 #' @examples
-#' load_clean("cleanfile")
+#' \dontrun{
+#' #' load_clean("cleanfile")
 #' load_clean("subfolder/to/cleansubfile")
+#' load_raw("rawfile")
+#' }
 load_clean <- function(filename) {
   load_file(file.path("data", "clean", filename))
 }
@@ -28,16 +31,25 @@ load_raw <- function(filename) {
 
 #' @importFrom stringr str_detect
 #' @importFrom tools file_ext
+#' @import cli
 load_file <- function(filename, ...) {
-  has_ext <- stringr::str_detect(filename, "\\.")
+  root_path <- Sys.getenv("ROOT_PATH")
+  project <- Sys.getenv("PROJECT_NAME")
+  filepath <- ifelse(root_path != "" && project != "",
+    file.path(root_path, project, filename),
+    filename
+  )
+  has_ext <- stringr::str_detect(filepath, "\\.")
   if (has_ext) {
-    ext <- tools::file_ext(filename)
+    ext <- tools::file_ext(filepath)
   } else {
-    ext <- find_ext(filename)
-    filename <- paste0(filename, ".", ext)
+    ext <- find_ext(filepath)
+    filepath <- paste0(filepath, ".", ext)
   }
   reader <- get_reader(ext)
-  reader(filename, ...)
+  df <- reader(filepath, ...)
+  cli::cli_alert_success("Loaded {filepath}")
+  df
 }
 
 #' @import feather

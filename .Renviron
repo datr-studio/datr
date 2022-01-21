@@ -1,3 +1,0 @@
-R_MAX_VSIZE = 12GB
-R_LIBS_USER=~/.rlibs/common/%v
-PKG_NAME=datr

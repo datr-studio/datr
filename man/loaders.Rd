@@ -21,6 +21,9 @@ These functions assume that your project includes a data/clean and data/raw dire
 They can handle file types of .csv, .tsv, .fe, & excel.
 }
 \examples{
-load_clean("cleanfile")
+\dontrun{
+#' load_clean("cleanfile")
 load_clean("subfolder/to/cleansubfile")
+load_raw("rawfile")
+}
 }

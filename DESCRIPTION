@@ -12,10 +12,14 @@ Suggests:
     tibble
 Config/testthat/edition: 3
 Imports: 
-    glue,
     dplyr,
     stringr,
-    crayon,
-    stats
+    stats,
+    saucer,
+    cli,
+    feather,
+    readxl,
+    vroom,
+    rlang
 URL: https://github.com/datr-studio/datr
 BugReports: https://github.com/datr-studio/datr/issues

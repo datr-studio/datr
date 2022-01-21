@@ -1,4 +1,4 @@
 library(testthat)
-library(commonr)
+library(datr)
 
-test_check("commonr")
+test_check("datr")

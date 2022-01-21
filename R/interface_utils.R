@@ -8,14 +8,15 @@
 #' @return Text that was inputed
 #'
 #' @export
+#' @import cli
 #'
 #' @examples
 #' input("What do you want to ask? ")
 input <- function(prompt) {
   if (interactive()) {
-    return(readline(crayon::yellow$bold(prompt)))
+    return(readline(cli::col_yellow(prompt)))
   } else {
-    cat(crayon::yellow$bold(prompt))
+    cli::cli_text(cli::col_yellow(prompt))
     return(readLines("stdin", n = 1))
   }
 }

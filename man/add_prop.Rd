@@ -20,7 +20,7 @@ Adds a proportion column to dataframe
 \examples{
 \dontrun{
 library(tidyverse)
-library(commonr)
+library(datr)
 tibble(a = runif(1e3)) \%>\%
   count(a > 0.5) \%>\%
   add_prop()
