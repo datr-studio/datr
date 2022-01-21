@@ -6,10 +6,11 @@
 #' @param silent Logical. If `TRUE`, information is given about the number of files sourced. Defaults to `FALSE`
 #' @param pattern An optional regex pattern to use to filter the path.
 #' @param excl An optional regex pattern to use to exclude files or folders from the search.
+#' @param verobe If true, each file will be printed to console on sourcing.
 #'
 #' @export
 #'
-source_folder <- function(folder, silent = TRUE, pattern = NULL, excl = NULL) {
+source_folder <- function(folder, silent = TRUE, pattern = NULL, excl = NULL, verbose = FALSE) {
   stopifnot(is.character(folder), length(folder) == 1, dir.exists(folder))
   paths <- list.files(folder, full.names = T, pattern = pattern)
   if (!is.null(excl)) {
@@ -18,8 +19,9 @@ source_folder <- function(folder, silent = TRUE, pattern = NULL, excl = NULL) {
   n <- 0
   for (path in paths) {
     if (dir.exists(path)) {
-      source_folder(path, silent)
+      source_folder(path, silent, pattern, excl, verbose)
     } else if (stringr::str_detect(path, pattern = "[a-z|A-Z|_]+\\.R$")) {
+      if (verbose) cat("Sourcing", path, "\n")
       source(path)
       n <- n + 1
     }

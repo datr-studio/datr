@@ -4,12 +4,12 @@
 \alias{add_prop}
 \title{Add Proportion}
 \usage{
-add_prop(.data, by = "n")
+add_prop(data, by = "n")
 }
 \arguments{
-\item{by}{column to use for proportions, defaults to \code{n}.}
-
 \item{data}{A dataframe}
+
+\item{by}{column to use for proportions, defaults to \code{n}.}
 }
 \value{
 A dataframe, with added prop column

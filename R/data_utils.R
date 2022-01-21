@@ -54,3 +54,5 @@ add_prop <- function(data, by = "n") {
 
 
 ensure_unique <- function(data, x) ifelse(any(names(data) == x), paste0(x, "..1"), x)
+
+

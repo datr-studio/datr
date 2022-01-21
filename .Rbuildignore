@@ -3,3 +3,6 @@
 ^.vscode$
 ^LICENSE\.md$
 ^README\.Rmd$
+^.Renviron$
+^reinstall.R$
+^dev.R$

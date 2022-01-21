@@ -44,6 +44,7 @@ printf <- function(string) {
     add_closing_braces() %>%
     glue::glue()
   cat(output)
+  cat("\n")
   invisible()
 }
 
@@ -78,5 +79,3 @@ remove_spaces_after_quotes <- function(x) {
     stringr::str_replace_all("\\(\" ", "\\(\"") %>%
     stringr::str_replace_all(" \"\\)", "\"\\)")
 }
-
-# remove_extra_spaces <- function(x) stringr::str_replace_all(x, "\\s\\s", " ")

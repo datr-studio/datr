@@ -13,9 +13,9 @@
 #' input("What do you want to ask? ")
 input <- function(prompt) {
   if (interactive()) {
-    return(readline(prompt))
+    return(readline(crayon::yellow$bold(prompt)))
   } else {
-    cat(prompt)
+    cat(crayon::yellow$bold(prompt))
     return(readLines("stdin", n = 1))
   }
 }
