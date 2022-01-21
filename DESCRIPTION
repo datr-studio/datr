@@ -1,6 +1,6 @@
 Package: datr
 Title: A colletion of common R functions that make life sweeter
-Version: 1.0.1
+Version: 1.1.0
 Authors@R: person("Josh", "Firth", , "drjoshfirth@gmailcom", role = c("aut", "cre"))
 Description: `datr` provides a suite of functions that are usable in just about every project. Functions include things like sourcing all files in a folder recursivel according to a pattern, eacy printing with fancy formating, and a host of other sweet goodies.
 License: GPL (>= 3)
