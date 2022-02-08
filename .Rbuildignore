@@ -6,3 +6,4 @@
 ^.Renviron$
 ^reinstall.R$
 ^dev.R$
+^TODO.md$

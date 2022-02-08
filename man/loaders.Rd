@@ -6,9 +6,9 @@
 \alias{load_raw}
 \title{Load Clean/Raw get your data smartly}
 \usage{
-load_clean(filename)
+load_clean(filename, ...)
 
-load_raw(filename)
+load_raw(filename, ...)
 }
 \arguments{
 \item{filename}{Name of filename to extract. File extensions are unneccesary and will be inferred. Use only if filenames are ambiguous.}

@@ -51,8 +51,17 @@ add_prop <- function(data, by = "n") {
 }
 
 
+#' @export
+relative_change <- function(from, to) (to - from) / from
 
 
 ensure_unique <- function(data, x) ifelse(any(names(data) == x), paste0(x, "..1"), x)
 
-
+#' @export
+get_final_ys <- function(data, .x, .y, names) {
+  data %>%
+    ungroup() %>%
+    filter({{ .x }} == max({{ .x }})) %>%
+    select({{ names }}, {{ .y }}) %>%
+    deframe()
+}

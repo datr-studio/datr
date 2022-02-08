@@ -20,6 +20,7 @@ Imports:
     feather,
     readxl,
     vroom,
-    rlang
+    rlang,
+    janitor
 URL: https://github.com/datr-studio/datr
 BugReports: https://github.com/datr-studio/datr/issues
