@@ -2,11 +2,11 @@
 % Please edit documentation in R/path_utils.R
 \name{loaders}
 \alias{loaders}
-\alias{load_clean}
+\alias{load_tidy}
 \alias{load_raw}
-\title{Load Clean/Raw get your data smartly}
+\title{Load Tidy/Raw get your data smartly}
 \usage{
-load_clean(filename, ...)
+load_tidy(filename, ...)
 
 load_raw(filename, ...)
 }
@@ -17,13 +17,13 @@ load_raw(filename, ...)
 A tibble.
 }
 \description{
-These functions assume that your project includes a data/clean and data/raw directory.
+These functions assume that your project includes a data/tidy and data/raw directory.
 They can handle file types of .csv, .tsv, .fe, & excel.
 }
 \examples{
 \dontrun{
-#' load_clean("cleanfile")
-load_clean("subfolder/to/cleansubfile")
+#' load_tidy("tidyfile")
+load_tidy("subfolder/to/tidysubfile")
 load_raw("rawfile")
 }
 }

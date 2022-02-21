@@ -1,7 +1,7 @@
 
-#' Load Clean/Raw get your data smartly
+#' Load Tidy/Raw get your data smartly
 #'
-#' These functions assume that your project includes a data/clean and data/raw directory.
+#' These functions assume that your project includes a data/tidy and data/raw directory.
 #' They can handle file types of .csv, .tsv, .fe, & excel.
 #'
 #' @name loaders
@@ -14,12 +14,12 @@
 #'
 #' @examples
 #' \dontrun{
-#' #' load_clean("cleanfile")
-#' load_clean("subfolder/to/cleansubfile")
+#' #' load_tidy("tidyfile")
+#' load_tidy("subfolder/to/tidysubfile")
 #' load_raw("rawfile")
 #' }
-load_clean <- function(filename, ...) {
-  load_file(file.path("data", "clean", filename))
+load_tidy <- function(filename, ...) {
+  load_file(file.path("data", "tidy", filename))
 }
 
 
@@ -58,9 +58,9 @@ load_file <- function(filename, ...) {
 }
 
 
-#' Save clean data in a standardised way
+#' Save tidy data in a standardised way
 #'
-#' This function standardises the saving of dataframes into the data/clean dir as a
+#' This function standardises the saving of dataframes into the data/tidy dir as a
 #' feather file
 #'
 #' This group of functions assumes that you have a `ROOT_PATH` and `PROJECT_NAME` envir
@@ -72,7 +72,7 @@ load_file <- function(filename, ...) {
 #'
 #' @export
 #' @import feather
-save_clean <- function(data, filename, force = FALSE) {
+save_tidy <- function(data, filename, force = FALSE) {
   # Arg checking
   check_type(data, "data.frame")
   check_type(filename, "character")
@@ -81,14 +81,14 @@ save_clean <- function(data, filename, force = FALSE) {
   root_path <- find_root_data_path()
   full_filename <- paste0(filename, ".fe")
   file_path <- file.path(root_path, full_filename)
-  short_path <- file.path("data", "clean", full_filename)
+  short_path <- file.path("data", "tidy", full_filename)
 
   # Confirm and create Sub Directory exists (if required)
   if (stringr::str_detect(filename, "\\/")) {
     subdirs <- stringr::str_extract(filename, "([a-zA-Z]+\\/)+")
     subdirs <- substr(subdirs, 1, nchar(subdirs) - 1)
     if (!dir.exists(file.path(root_path, subdirs))) {
-      if (force || confirm_dir_create(file.path("data", "clean", subdirs))) {
+      if (force || confirm_dir_create(file.path("data", "tidy", subdirs))) {
         dir.create(file.path(root_path, subdirs), recursive = TRUE)
       }
     }
@@ -111,9 +111,10 @@ save_clean <- function(data, filename, force = FALSE) {
 get_reader <- function(ext) {
   switch(ext,
     "fe" = function(f, ...) feather::read_feather(f, ...),
-    "csv" = function(f, ...) vroom::vroom(f, show_col_types = FALSE, ...),
+    "csv" = ,
     "tsv" = function(f, ...) vroom::vroom(f, show_col_types = FALSE, ...),
-    "xlsx" = function(f, ...) readxl::read_excel(f, ...),
+    "xls" = ,
+    "xlsx" = ,
     "xlsm" = function(f, ...) readxl::read_excel(f, ...),
     stop(unsupported_file_error(ext))
   )
@@ -138,10 +139,10 @@ find_ext <- function(full_filename) {
 find_root_data_path <- function() {
   root_path <- get_root_dir()
   if (is.null(root_path)) {
-    cli::cli_alert_danger("Unable to save data. {.path data/clean} doesn't exist!")
+    cli::cli_alert_danger("Unable to save data. {.path data/tidy} doesn't exist!")
     stop_quietly()
   } else {
-    data_path <- file.path(root_path, "data", "clean")
+    data_path <- file.path(root_path, "data", "tidy")
   }
 
   data_path
@@ -150,7 +151,7 @@ find_root_data_path <- function() {
 #' Find data directory
 #'
 #' `get_root_dir()` recursively searches backwards through the working directories to find
-#'  a directory named 'data/clean'. Will try up to 4 times before giving up.
+#'  a directory named 'data/tidy'. Will try up to 4 times before giving up.
 #'
 #' @export
 #'
@@ -159,7 +160,7 @@ get_root_dir <- function() {
   oldwd <- getwd()
   on.exit(setwd(oldwd))
   for (attempt in 1:4) {
-    if (dir.exists("data/clean")) {
+    if (dir.exists("data/tidy")) {
       return(getwd())
     } else {
       setwd("..")
@@ -167,6 +168,9 @@ get_root_dir <- function() {
   }
   invisible(NULL)
 }
+
+#' @export
+set_root <- function() setwd(get_root_dir())
 
 
 

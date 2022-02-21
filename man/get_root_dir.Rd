@@ -11,5 +11,5 @@ root path as character or NULL.
 }
 \description{
 \code{get_root_dir()} recursively searches backwards through the working directories to find
-a directory named 'data/clean'. Will try up to 4 times before giving up.
+a directory named 'data/tidy'. Will try up to 4 times before giving up.
 }

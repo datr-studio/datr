@@ -45,6 +45,7 @@ add_source <- function(data, source_name) {
 #' # 2 TRUE        488 0.488
 #' }
 add_prop <- function(data, by = "n") {
+  warning("`add_prop` doesn't use dplyr, and so doesn't understand groupings")
   col_name <- ensure_unique(data, "prop")
   data[col_name] <- data[[by]] / sum(data[[by]])
   data

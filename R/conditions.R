@@ -12,3 +12,13 @@ unsupported_file_error <- function(ext) {
     message = msg, ext = ext
   )
 }
+
+#' @export
+rstudio_stfu <- function(f, ...) {
+  withCallingHandlers(
+    warning = function(cnd) {
+      if (str_detect(cnd$message, "Please install a newer")) rlang::cnd_muffle(cnd)
+    },
+    f(...)
+  )
+}
