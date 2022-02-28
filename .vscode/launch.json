@@ -6,13 +6,6 @@
   "configurations": [
     {
       "type": "R-Debugger",
-      "name": "Launch R-Workspace",
-      "request": "launch",
-      "debugMode": "workspace",
-      "workingDirectory": "${workspaceFolder}"
-    },
-    {
-      "type": "R-Debugger",
       "name": "Debug R-File",
       "request": "launch",
       "debugMode": "file",

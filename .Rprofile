@@ -1,6 +1,6 @@
 options(repos = "https://cran.stat.auckland.ac.nz/")
-
-if (interactive()) {
+options(warnPartialMatchDollar = TRUE)
+if (interactive() && stringr::str_detect(getwd(), "Packages")) {
   suppressMessages(require(devtools))
 }
 
@@ -12,5 +12,3 @@ reinstall <- function() {
   devtools::document()
   devtools::install()
 }
-
-devtools::load_all()
