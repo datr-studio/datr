@@ -163,6 +163,7 @@ load_raw <- function(name, ...) {
 load_file <- function(name, reg_type, ...) {
   file <- get_register(reg_type) %>%
     dplyr::filter(.data$name == .env$name)
+  if (reg_type == "tidy") file$ext <- "fe"
   reader <- get_reader(file$ext)
   source_dir <- get_source_dir(name, reg_type)
   filepath <- file.path(
@@ -171,7 +172,7 @@ load_file <- function(name, reg_type, ...) {
   df <- reader(filepath, ...) %>%
     janitor::clean_names()
   df$source <- file$source
-  cli::cli_alert_success("Loaded {.path {name}} (source: {file$source}).")
+  cli::cli_alert_success("Loaded {.path {name}} (Source: {file$source}).")
   df
 }
 
@@ -192,11 +193,17 @@ get_reader <- function(ext) {
 }
 
 
-# Save Tidy ---------------------------------------------------------------
+#' Save Tidy
 #'
+#' Save a tidy copy of your data according to the datrstudio data management system.
 #'
+#' @param data A data.frame
+#' @param name Name of the data frame
+#' @param source Name of the source for reference. Can be inferred from a column called `source` if there is one.
 #'
-save_tidy <- function(data, name, source = NULL, force = FALSE) {
+#' @export
+#'
+save_tidy <- function(data, name, source = NULL) {
   # Arg checking
   check_type(data, "data.frame")
   check_type(name, "character")
