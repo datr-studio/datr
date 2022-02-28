@@ -80,3 +80,8 @@ check_type <- function(arg, exp_type) {
 check_exists <- function(filepath) {
   if (!file.exists(filepath)) abort_file_not_found(filepath)
 }
+
+mkdir <- function(path) {
+  if (!dir.exists(path)) dir.create(path, recursive = TRUE)
+}
+

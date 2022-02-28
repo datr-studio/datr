@@ -1,0 +1,10 @@
+
+```{r setup, include=FALSE}
+library(datr)
+library(tidyverse)
+rmd_setup("")
+```
+
+```{r globals, include = FALSE}
+# GLOBALS GO HERE
+```

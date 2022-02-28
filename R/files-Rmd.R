@@ -27,20 +27,6 @@ rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
     setwd(working_dir)
   }
 
-  # Core functions should be removed.
-  if (!dir.exists("functions")) {
-    dir.create("functions")
-  }
-
-  # _html stored in its own folder
-  if (!dir.exists("_html") & !export & !pdf) {
-    dir.create("_html")
-  }
-
-  if (pdf & !dir.exists("_pdf")) {
-    dir.create("_pdf")
-  }
-
   # Plot Settings
   library(zibas)
   ggplot2::theme_set(zibas::theme_ziba())

@@ -1,0 +1,8 @@
+Package: test-pkg
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: person("Josh", "Firth", , "drjoshfirth@gmailcom", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-3815-8789"))
+Description: What the package does (one paragraph).
+Encoding: UTF-8
+
