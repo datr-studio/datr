@@ -16,6 +16,7 @@ archive <- function(path) {
   on.exit(setwd(old))
   set_root()
   use_archive()
+  path <- rm_trailing_slash(path)
   check_exists(path)
   if (!is_dir(path)) archive_file(path) else archive_dir(path)
 }
@@ -28,7 +29,7 @@ archive_file <- function(path) {
   base_subdir <- ifelse(!strdetc(base_subdir, "\\."), paste0(base_subdir, "-"), "")
   to <- file.path("archive", paste0(base_dir, base_subdir, name))
   system(paste0("tar -czf ", to, ".tar.gz ", path))
-  unlink(path)
+  if (file.exists(paste0(to, ".tar.gz"))) unlink(path)
   cli::cli_alert_success("File archived to {.path {to}}.")
 }
 
@@ -38,7 +39,7 @@ archive_dir <- function(path) {
   base_subdir <- base_subdir(path)
   to <- file.path("archive", paste0(base_dir, base_subdir))
   system(paste0("tar -czf ", to, ".tar.gz ", path))
-  unlink(path, recursive = TRUE, force = TRUE)
+  if (file.exists(paste0(to, ".tar.gz"))) unlink(path, recursive = TRUE, force = TRUE)
   cli::cli_alert_success("Directory archived to {.path {to}}.")
 }
 
@@ -56,7 +57,6 @@ unarchive <- function(name) {
   set_root()
   name <- ifelse(!strdetc(name, "\\.tar\\.gz"), paste0(name, ".tar.gz"), name)
   path <- file.path("archive", name)
-  check_exists(path)
   system(paste0("tar -xzf ", path))
   unlink(path)
   cli::cli_alert_success("{.path {name}} unarchived to original location.")

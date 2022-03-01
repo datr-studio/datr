@@ -5,7 +5,8 @@ abort_non_unique_name <- function(name, reg_type) {
 }
 
 abort_unregistered <- function(name, reg_type) {
-  cli::cli_alert_danger("Error: {.val {name}} is not registered in the {reg_type} data stop_quietly()register.")
+  cli::cli_alert_danger("Error: {.val {name}} is not registered in the {reg_type} data register.")
+  stop_quietly()
 }
 
 abort_unsupported_file <- function(ext) {

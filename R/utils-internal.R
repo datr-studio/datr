@@ -11,26 +11,6 @@
 
 `%||%` <- function(a, b) ifelse(!is.null(a), a, b)
 
-# Type Checking ---------------------------------------------------------------
-#'
-
-assert <- function(x, y) {
-  if (!is.null(x)) {
-    if (!inherits(x, y)) {
-      stop(deparse(substitute(x)), " must be of class ",
-        paste0(y, collapse = ","),
-        call. = FALSE
-      )
-    }
-  }
-}
-
-
-# Lists ---------------------------------------------------------------
-#'
-
-compact <- function(l) Filter(Negate(is.null), l)
-
 # Regex ---------------------------------------------------------------
 #'
 
@@ -49,14 +29,6 @@ rem_ext <- function(x) {
   x <- sub("[.](gz|bz2|xz)$", "", x)
   sub("([^.]+)\\.[[:alnum:]]+$", "\\1", x)
 }
-
-condition <- function(subclass, message, call = sys.call(-1), ...) {
-  structure(
-    class = c(subclass, "condition"),
-    list(message = message, call = call, ...)
-  )
-}
-
 
 
 #' @export
@@ -121,3 +93,5 @@ base_subdir <- function(path) {
   sans_tail <- strem(sans_base, "\\/.+")
   sans_tail
 }
+
+rm_trailing_slash <- function(x) strem(x, "\\/$")
