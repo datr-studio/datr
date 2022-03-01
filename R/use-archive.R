@@ -63,6 +63,12 @@ unarchive <- function(name) {
   rm_archive_if_empty()
 }
 
+#' Unarchive file(s) by regex pattern
+#'
+#' Simple helper to extract tarball from project archive using regex pattern matching.
+#'
+#' @param pattern Regex pattern to use.
+#' @export
 unarchive_pattern <- function(pattern) {
   files <- list.files("archive", pattern = pattern)
   purrr::walk(files, unarchive)
