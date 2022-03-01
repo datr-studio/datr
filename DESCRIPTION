@@ -25,4 +25,5 @@ Imports:
     purrr,
     cli,
     rlang,
-    saucer
+    saucer,
+    rstudioapi

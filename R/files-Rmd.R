@@ -12,7 +12,7 @@ rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
                       png = FALSE, pdf = FALSE) {
 
   # Rmd should always be in the folder "notebooks" under the main project folder, but can include a subdir
-  root_dir <- datr::get_root_dir()
+  root_dir <- datr::get_root()
   if (export) {
     folder <- "export"
   } else if (validation) {

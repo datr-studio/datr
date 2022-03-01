@@ -1,0 +1,32 @@
+---
+title: Test
+knit: (function(inputFile, encoding) {
+  filename = tools::file_path_sans_ext(basename(inputFile));
+  rmarkdown::render(inputFile, encoding=encoding,
+                   output_file=file.path('.html', paste0(filename, '.html')))})
+output:
+  html_notebook:
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+library(datr)
+library(tidyverse)
+rmd_setup("EDA")
+```
+
+```{r globals, include = FALSE}
+# GLOBALS GO HERE
+```
+
+```{r functions, include = FALSE}
+# FUNCTIONS ARE OUTSOURCED
+source_folder("functions")
+```
+
+```{r data-prep, include = FALSE}
+# DATA SCRIPTS GO HERE
+```
+
+# Aim
+The aim of this notebook is to 

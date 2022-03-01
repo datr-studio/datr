@@ -1,5 +1,5 @@
 get_template <- function(name) {
-  readLines(file.path(get_root_dir(), "templates", name))
+  readLines(file.path(get_root(), "templates", name))
 }
 
 replace_line <- function(template, index, new_line) {

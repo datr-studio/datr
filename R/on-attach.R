@@ -13,11 +13,11 @@
 
 
 has_desc <- function() {
-  !is.null(get_root_dir())
+  !is.null(get_root())
 }
 
 has_tidy_data <- function() {
-  root <- get_root_dir()
+  root <- get_root()
   has_raw_reg <- file.exists(file.path(root, "data", "raw-register.csv"))
   has_tidy_reg <- file.exists(file.path(root, "data", "tidy-register.csv"))
   has_raw_reg && has_tidy_reg
@@ -25,7 +25,7 @@ has_tidy_data <- function() {
 
 load_register <- function(reg_type) {
   reg <- paste0(reg_type, "-register.csv")
-  filename <- file.path(get_root_dir(), "data", reg)
+  filename <- file.path(get_root(), "data", reg)
   vroom::vroom(filename, delim = ",", col_types = "ccc")
 }
 
@@ -58,7 +58,7 @@ update_register_tidy <- function(data) {
 
 save_register <- function(data, reg_type) {
   reg <- paste0(reg_type, "-register.csv")
-  filename <- file.path(get_root_dir(), "data", reg)
+  filename <- file.path(get_root(), "data", reg)
   vroom::vroom_write(data, filename, delim = ",")
 }
 

@@ -81,7 +81,7 @@ organise_file_tree <- function(reg_type, source) {
     unique()
   purrr::walk(sources, create_source_dir, reg_type)
   # Remove any dirs not associated with a source
-  dirs <- list.dirs(file.path(get_root_dir(), "data", reg_type), full.names = FALSE, recursive = FALSE)
+  dirs <- list.dirs(file.path(get_root(), "data", reg_type), full.names = FALSE, recursive = FALSE)
   source_dirs <- purrr::map_chr(sources, standardise_filename)
   obsolete_dirs <- setdiff(dirs, source_dirs)
   purrr::walk(obsolete_dirs, remove_source_dir, reg_type)
@@ -89,14 +89,14 @@ organise_file_tree <- function(reg_type, source) {
 
 create_source_dir <- function(source, reg_type) {
   source <- standardise_filename(source)
-  dirpath <- file.path(get_root_dir(), "data", reg_type, source)
+  dirpath <- file.path(get_root(), "data", reg_type, source)
   if (!dir.exists(dirpath)) dir.create(dirpath)
 }
 
 remove_source_dir <- function(source, reg_type) {
   source <- standardise_filename(source)
   unlink(
-    file.path(get_root_dir(), "data", reg_type, source),
+    file.path(get_root(), "data", reg_type, source),
     recursive = TRUE, force = TRUE
   )
 }
@@ -117,7 +117,7 @@ get_ext <- function(name, reg_type) {
 move_to_raw <- function(from, name, source) {
   ext <- tools::file_ext(from)
   source <- standardise_filename(source)
-  to <- file.path(get_root_dir(), "data", "raw", source, paste0(name, ".", ext))
+  to <- file.path(get_root(), "data", "raw", source, paste0(name, ".", ext))
   file.copy(from, to)
   unlink(from)
 }
@@ -167,7 +167,7 @@ load_file <- function(name, reg_type, ...) {
   reader <- get_reader(file$ext)
   source_dir <- get_source_dir(name, reg_type)
   filepath <- file.path(
-    get_root_dir(), "data", reg_type, source_dir, paste0(name, ".", file$ext)
+    get_root(), "data", reg_type, source_dir, paste0(name, ".", file$ext)
   )
   df <- reader(filepath, ...) %>%
     janitor::clean_names()
@@ -211,7 +211,7 @@ save_tidy <- function(data, name, source = NULL) {
   append_to_register_tidy(name, source)
   organise_file_tree("tidy")
   sourcedir <- standardise_filename(source)
-  filepath <- file.path(get_root_dir(), "data", "tidy", sourcedir, paste0(name, ".fe"))
+  filepath <- file.path(get_root(), "data", "tidy", sourcedir, paste0(name, ".fe"))
   feather::write_feather(data, filepath)
 }
 

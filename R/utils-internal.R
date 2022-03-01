@@ -81,7 +81,43 @@ check_exists <- function(filepath) {
   if (!file.exists(filepath)) abort_file_not_found(filepath)
 }
 
+is_dir <- function(path) dir.exists(path)
+
 mkdir <- function(path) {
-  if (!dir.exists(path)) dir.create(path, recursive = TRUE)
+  if (!dir.exists(path)) {
+    dir.create(path, recursive = TRUE)
+    cli::cli_alert_success("Creating {.path {relative_path(path)}}")
+  }
 }
 
+write_file <- function(content, path, open = TRUE) {
+  con <- file(path)
+  writeLines(content, con)
+  close(con)
+  cli::cli_alert_success("Writing {.path {relative_path(path)}}")
+  if (open) open_file(path)
+}
+
+
+#' @importFrom rstudioapi navigateToFile
+open_file <- function(path) rstudioapi::navigateToFile(path)
+
+relative_path <- function(path) {
+  strem(path, paste0(get_root(), "/"))
+}
+
+#' @importFrom  tools file_path_sans_ext
+base_name <- function(path) tools::file_path_sans_ext(basename(path))
+
+base_project_dir <- function(path) {
+  sans_root <- strem(path, paste0(get_root(), "/"))
+  sans_tail <- strem(sans_root, "\\/.+")
+  sans_tail
+}
+
+base_subdir <- function(path) {
+  sans_root <- strem(path, paste0(get_root(), "/"))
+  sans_base <- strem(sans_root, paste0(base_project_dir(path), "/"))
+  sans_tail <- strem(sans_base, "\\/.+")
+  sans_tail
+}

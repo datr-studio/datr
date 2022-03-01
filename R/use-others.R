@@ -1,23 +1,8 @@
 #' @export
 use_desc <- function(proj_name, path = ".") {
-  desc <- c(
-    paste0("Package: ", proj_name),
-    "Title: What the Package Does (One Line, Title Case)",
-    "Version: 0.0.0.9000",
-    "Authors@R: person(\"Josh\", \"Firth\", , \"drjoshfirth@gmailcom\", role = c(\"aut\", \"cre\"),",
-    "           comment = c(ORCID = \"0000-0003-3815-8789\"))",
-    "Description: What the package does (one paragraph).",
-    "License: ????",
-    "Encoding: UTF-8",
-    "Roxygen: list(markdown = TRUE)",
-    "RoxygenNote: ????",
-    "Suggests: ",
-    "    testthat (>= 3.0.0)",
-    "Config/testthat/edition: 3"
-  )
-  con <- file(file.path(path, "DESCRIPTION"))
-  writeLines(desc, con)
-  close(con)
+  get_template("DESCRIPTION") %>%
+    replace_line(1, paste0("Package: ", proj_name)) %>%
+    write_file(file.path(path, "DESCRIPTION"))
 }
 
 #' @export
@@ -38,15 +23,15 @@ use_data <- function(path = ".") {
 
 
 
-
+#' @export
 use_validation <- function(path = ".") {
   mkdir(file.path(path, "validation", "analysis"))
   mkdir(file.path(path, "validation", "outputs"))
-  con <- file(file.path(path, "validation", "validate.R"))
-  writeLines(c("#!/usr/bin/env Rscript", "library(bladerunr)"), con)
-  close(con)
+  validate <- c("#!/usr/bin/env Rscript", "library(bladerunr)")
+  write_file(validate, file.path(path, "validation", "validate.R"))
 }
 
+#' @export
 use_notebooks <- function(path = ".") {
   mkdir(file.path(path, "notebooks", "EDA"))
 }

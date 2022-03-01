@@ -1,4 +1,4 @@
-
+#' @export
 use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
                    use_func = TRUE, validation = FALSE, export = FALSE) {
   #  check args
@@ -8,7 +8,7 @@ use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
   filename <- paste0(filename %||% make_filename(title), ".Rmd")
 
   # Confirm base path exists
-  root <- datr::get_root_dir()
+  root <- datr::get_root()
   if (export) {
     path <- file.path(root, "export")
     mkdir(path)
@@ -30,12 +30,14 @@ use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
   # Build subdir context
   if (use_func) mkdir(file.path(path, "functions"))
   if (pdf) {
-    mkdir(file.path(path, ".pdf"))
+    mkdir(file.path(path, "pdf"))
   } else {
-    mkdir(file.path(path, ".html"))
+    mkdir(file.path(path, "html"))
   }
 
+
   # build nb
+
   if (pdf) {
     nb <- get_template("rmd-pdf-start.Rmd")
     rmd_setup_params <- paste0(rmd_setup_params, ", pdf = TRUE")
@@ -48,13 +50,7 @@ use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
       replace_line(5, paste0("rmd_setup(", rmd_setup_params, ")")))
   if (use_func) nb <- append_lines(nb, get_template("rmd-func.Rmd"))
   nb <- append_lines(nb, get_template("rmd-base-end.Rmd"))
-  con <- file(file.path(path, filename))
-  writeLines(nb, con)
-  close(con)
+  write_file(nb, file.path(path, filename))
 }
 
 make_filename <- function(title) standardise_filename(title)
-
-build_nb_template <- function(title, pdf, use_func) {
-  t
-}
