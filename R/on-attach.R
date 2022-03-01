@@ -1,3 +1,8 @@
+# Data management ---------------------------------------------------------------
+#'
+#'
+#'
+
 .state <- new.env(parent = emptyenv())
 .state$raw <- NULL
 .state$tidy <- NULL
@@ -63,3 +68,5 @@ save_register <- function(data, reg_type) {
 }
 
 #' @import magrittr
+
+
