@@ -10,7 +10,7 @@
 #' @param filepath Path to file to add.
 #' @param source Source name.
 #'
-#' @import tools vroom
+#' @importFrom tools file_ext
 #' @export
 save_raw <- function(filepath, version, source) {
   check_type(filepath, "character")
@@ -24,13 +24,26 @@ save_raw <- function(filepath, version, source) {
     warn_skipping_dir(filepath)
   } else {
     name <- standardise_filename(rem_ext(basename(filepath)))
-    name <- paste0(name, "-", version)
+    name <- paste0(name, "-", standardise_filename(version))
     ext <- tools::file_ext(filepath)
     append_to_register_raw(name, version, source, ext)
     organise_file_tree("raw")
     move_to_raw(filepath, name, source)
     cli::cli_alert_success("{.val {name}} has been saved to raw data.")
   }
+}
+
+
+#' @export
+save_raw_folder <- function(folder, version, source) {
+  check_type(folder, "character")
+  check_type(source, "character")
+
+  version <- as.character(version)
+  if (!length(version) == 1) abort_incorrect_version(version)
+  if (!is_dir(folder)) abort_folder_not_found(folder)
+  files <- list.files(folder, full.names = TRUE, recursive = TRUE)
+  purrr::walk(files, ~ save_raw(.x, version, source))
 }
 
 #' Save Tidy
@@ -49,7 +62,7 @@ save_tidy <- function(data, name, version, source = NULL) {
   check_type(name, "character")
   check_type(version, "numeric")
   source <- source %||% check_source(data, name)
-  name <- paste0(name, "-", version)
+  name <- paste0(name, "-", standardise_filename(version))
   append_to_register_tidy(name, version, source)
   organise_file_tree("tidy")
   sourcedir <- standardise_filename(source)
@@ -88,6 +101,9 @@ replace_tidy <- function(data, name) {
   save_tidy(data, name, metadata$version, metadata$source)
 }
 
+
+
+
 # Append to register ---------------------------------------------------------------
 #' @import tibble
 append_to_register_raw <- function(name, version, source, ext) {
@@ -113,7 +129,7 @@ append_to_register_tidy <- function(name, version, source) {
 #' @param name Name of data file.
 #' @param reg_type Data types to remove: raw, tidy, both.
 #'
-#' @import dplyr
+#' @importFrom dplyr filter
 #'
 #' @export
 deregister <- function(name, reg_type = "both") {
@@ -233,8 +249,8 @@ load_file <- function(name, reg_type, ...) {
 
 
 #' @import feather
-#' @import readxl
-#' @import vroom
+#' @importFrom readxl read_excel
+#' @importFrom vroom vroom
 get_reader <- function(ext) {
   switch(ext,
     "fe" = function(f, ...) feather::read_feather(f, ...),
@@ -281,9 +297,9 @@ rename_source_both <- function(from, to) {
 
 rename_source_raw <- function(from, to) {
   if (!is_valid_source(from, "raw")) abort_no_such_source(from, "raw")
-  get_register("raw") %>%
-    mutate(source = ifelse(source == from, to, source)) %>%
-    update_register_raw()
+  reg <- get_register("raw")
+  reg$source <- ifelse(reg$source == from, to, reg$source)
+  update_register_raw(reg)
   to <- standardise_filename(to)
   from <- standardise_filename(from)
   root <- get_root()
@@ -294,9 +310,9 @@ rename_source_raw <- function(from, to) {
 
 rename_source_tidy <- function(from, to) {
   if (!is_valid_source(from, "tidy")) abort_no_such_source(from, "tidy")
-  get_register("tidy") %>%
-    mutate(source = ifelse(source == from, to, source)) %>%
-    update_register_tidy()
+  reg <- get_register("tidy")
+  reg$source <- ifelse(reg$source == from, to, reg$source)
+  update_register_tidy(reg)
   to <- standardise_filename(to)
   from <- standardise_filename(from)
   root <- get_root()
@@ -305,6 +321,17 @@ rename_source_tidy <- function(from, to) {
   rename_dir(from_path, to_path)
 }
 
+
+
+#' Rename data
+#'
+#' Rename a data file and keep the files organised.
+#'
+#' @param original_name Current name.
+#' @param new_name Name to change to.
+#' @param reg_type Which register to change it in. Either raw, tidy, or both.
+#'
+#' @export
 rename_data <- function(original_name, new_name, reg_type = "both") {
   reg_type <- match.arg(reg_type, c("raw", "tidy", "both"))
   switch(reg_type,
@@ -313,6 +340,49 @@ rename_data <- function(original_name, new_name, reg_type = "both") {
     both = rename_data_both(original_name, new_name),
   )
   cli::cli_alert_success("{original_name} has been renamed to {.val {new_name}}.")
+}
+
+rename_data_raw <- function(from, to) {
+  if (!is_registered(from, "raw")) abort_unregistered(from)
+  original_meta <- get_metadata_raw(from)
+  source <- standardise_filename(original_meta$source)
+  version <- standardise_filename(original_meta$version)
+  to <- rem_ext(to)
+  to <- standardise_filename(strem(to, version))
+  to <- paste0(to, "-", version)
+  reg <- get_register("raw")
+  reg$name <- ifelse(reg$name == from, to, reg$name)
+  update_register_raw(reg)
+  from <- paste0(from, ".", original_meta$ext)
+  to <- paste0(to, ".", original_meta$ext)
+  old_filename <- file.path(file.path(get_root(), "data", "raw", source, from))
+  new_filename <- file.path(file.path(get_root(), "data", "raw", source, to))
+  file.copy(old_filename, new_filename)
+  unlink(old_filename)
+}
+
+rename_data_tidy <- function(from, to) {
+  if (!is_registered(from, "tidy")) abort_unregistered(from)
+  original_meta <- get_metadata_tidy(from)
+  source <- standardise_filename(original_meta$source)
+  version <- standardise_filename(original_meta$version)
+  to <- rem_ext(to)
+  to <- standardise_filename(strem(to, version))
+  to <- paste0(to, "-", version)
+  reg <- get_register("tidy")
+  reg$name <- ifelse(reg$name == from, to, reg$name)
+  update_register_tidy(reg)
+  from <- paste0(from, ".", original_meta$ext)
+  to <- paste0(to, ".", original_meta$ext)
+  old_filename <- file.path(file.path(get_root(), "data", "tidy", source, from))
+  new_filename <- file.path(file.path(get_root(), "data", "tidy", source, to))
+  file.copy(old_filename, new_filename)
+  unlink(old_filename)
+}
+
+rename_data_both <- function(from, to) {
+  rename_data_raw(from, to)
+  rename_data_tidy(from, to)
 }
 
 # Path helpers ---------------------------------------------------------------
@@ -327,7 +397,7 @@ standardise_filename <- function(x) {
 organise_file_tree <- function(reg_type, source) {
   # Make dir for each source in register
   sources <- get_register(reg_type) %>%
-    pull(source) %>%
+    dplyr::pull(source) %>%
     unique()
   purrr::walk(sources, create_source_dir, reg_type)
   # Remove any dirs not associated with a source
@@ -354,14 +424,14 @@ remove_source_dir <- function(source, reg_type) {
 get_source_dir <- function(name, reg_type) {
   get_register(reg_type) %>%
     filter(.data$name == .env$name) %>%
-    pull(source) %>%
+    dplyr::pull(source) %>%
     standardise_filename()
 }
-
+#' @importFrom dplyr pull
 get_ext <- function(name, reg_type) {
   get_register(reg_type) %>%
     filter(.data$name == .env$name) %>%
-    pull(ext)
+    dplyr::pull(ext)
 }
 
 move_to_raw <- function(from, name, source) {

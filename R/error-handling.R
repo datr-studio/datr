@@ -19,6 +19,11 @@ abort_file_not_found <- function(filename) {
   stop_quietly()
 }
 
+abort_folder_not_found <- function(folder) {
+  cli::cli_alert_danger("Error: the folder {.path {folder}} doesn't exist.")
+  stop_quietly()
+}
+
 abort_arg_wrong_type <- function(arg, arg_name, exp_type) {
   cli::cli_alert_danger("Error: {.var {arg_name}} must be a {exp_type}")
   cli::cli_text("You've supplied a {.cls {class(arg)}} type.")

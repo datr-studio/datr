@@ -6,7 +6,7 @@
 #' @importFrom knitr opts_chunk
 #' @importFrom ggplot2 theme_set
 #' @importFrom zibas theme_ziba
-#' @import knitr
+#' @importFrom knitr opts_chunk
 #' @export
 rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
                       png = FALSE, pdf = FALSE) {

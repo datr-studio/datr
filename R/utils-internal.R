@@ -32,7 +32,7 @@ rem_ext <- function(x) {
 
 
 #' @export
-#' @import rlang
+#' @importFrom rlang cnd_muffle
 rstudio_stfu <- function(f, ...) {
   withCallingHandlers(
     warning = function(cnd) {
@@ -42,6 +42,7 @@ rstudio_stfu <- function(f, ...) {
   )
 }
 
+#' @importFrom rlang expr_text enexpr
 check_type <- function(arg, exp_type) {
   arg_name <- rlang::expr_text(rlang::enexpr(arg))
   if (!inherits(arg, exp_type)) {
@@ -71,7 +72,6 @@ write_file <- function(content, path, open = TRUE) {
 }
 
 rename_dir <- function(from, to) {
-  browser()
   if (dir.exists(from)) {
     dir.create(to)
     files <- list.files(from, full.names = FALSE, recursive = TRUE)

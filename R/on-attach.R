@@ -24,15 +24,15 @@ has_desc <- function() {
 
 has_tidy_data <- function() {
   root <- get_root()
-  has_raw_reg <- file.exists(file.path(root, "data", "raw-register.csv"))
-  has_tidy_reg <- file.exists(file.path(root, "data", "tidy-register.csv"))
+  has_raw_reg <- file.exists(file.path(root, "data", ".raw.fe"))
+  has_tidy_reg <- file.exists(file.path(root, "data", ".tidy.fe"))
   has_raw_reg && has_tidy_reg
 }
 
 load_register <- function(reg_type) {
-  reg <- paste0(reg_type, "-register.csv")
+  reg <- paste0(".", reg_type, ".fe")
   filename <- file.path(get_root(), "data", reg)
-  vroom::vroom(filename, delim = ",", col_types = "cccc")
+  feather::read_feather(filename)
 }
 
 get_register <- function(reg_type) {
@@ -63,9 +63,9 @@ update_register_tidy <- function(data) {
 }
 
 save_register <- function(data, reg_type) {
-  reg <- paste0(reg_type, "-register.csv")
+  reg <- paste0(".", reg_type, ".fe")
   filename <- file.path(get_root(), "data", reg)
-  vroom::vroom_write(data, filename, delim = ",")
+  feather::write_feather(data, filename)
 }
 
 #' @import magrittr

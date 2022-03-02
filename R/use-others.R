@@ -9,15 +9,13 @@ use_desc <- function(proj_name, path = ".") {
 use_data <- function(path = ".") {
   mkdir(file.path(path, "data", "raw"))
   mkdir(file.path(path, "data", "tidy"))
-  vroom::vroom_write(
-    tibble::tibble(name = character(), source = character(), ext = character()),
-    file.path(path, "data", "raw-register.csv"),
-    delim = ","
+  feather::write_feather(
+    tibble::tibble(name = character(), version = character(), source = character(), ext = character()),
+    file.path(path, "data", ".raw.fe")
   )
-  vroom::vroom_write(
-    tibble::tibble(name = character(), source = character()),
-    file.path(path, "data", "tidy-register.csv"),
-    delim = ","
+  feather::write_feather(
+    tibble::tibble(name = character(), version = character(), source = character()),
+    file.path(path, "data", ".tidy.fe")
   )
 }
 
