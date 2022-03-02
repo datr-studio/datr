@@ -70,6 +70,18 @@ write_file <- function(content, path, open = TRUE) {
   if (open) open_file(path)
 }
 
+rename_dir <- function(from, to) {
+  browser()
+  if (dir.exists(from)) {
+    dir.create(to)
+    files <- list.files(from, full.names = FALSE, recursive = TRUE)
+    purrr::walk(files, ~ file.copy(
+      file.path(from, .x), file.path(to, .x)
+    ))
+    unlink(from, recursive = TRUE, force = TRUE)
+  }
+}
+
 
 #' @importFrom rstudioapi navigateToFile
 open_file <- function(path) rstudioapi::navigateToFile(path)

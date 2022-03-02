@@ -4,7 +4,7 @@
 \alias{load_utils}
 \title{Load utils folder}
 \usage{
-load_utils()
+load_utils(...)
 }
 \description{
 \code{load_utils()} is another standardisation method from the datr library intended

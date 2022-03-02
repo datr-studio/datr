@@ -21,7 +21,13 @@ abort_file_not_found <- function(filename) {
 
 abort_arg_wrong_type <- function(arg, arg_name, exp_type) {
   cli::cli_alert_danger("Error: {.var {arg_name}} must be a {exp_type}")
-  cli::cli_text(cli::col_grey("You've supplied a {.cls {class(x)}} type."))
+  cli::cli_text("You've supplied a {.cls {class(arg)}} type.")
+  stop_quietly()
+}
+
+abort_incorrect_version <- function(version) {
+  cli::cli_alert_danger("Error: {.arg version} must be a character or numeric of length 1.")
+  cli::cli_text("You've given the following: {.val {version}}.")
   stop_quietly()
 }
 
@@ -41,6 +47,15 @@ abort_no_source <- function(name) {
   stop_quietly()
 }
 
+abort_no_such_source <- function(name, reg_type) {
+  cli::cli_alert_danger("Error: A source named {.val {name}} could not be found in the {reg_type} register.")
+  stop_quietly()
+}
+
+warn_unregistered <- function(name, reg_type) {
+  cli::cli_alert_warning("{.val {name}} was not found in {reg_type} data.")
+}
+
 warn_not_tidy <- function() {
   cli::cli_alert_warning("Warning: {.pkg datr} requires a tidy project structure to work correctly.")
   cli::cli_text(
@@ -48,6 +63,10 @@ warn_not_tidy <- function() {
       "Try `datr::use_desc()` and `datr::use_data()` to set your project up correctly."
     )
   )
+}
+
+warn_skipping_dir <- function(name) {
+  cli::cli_alert_warning("Warning: {.path {name}} can't be added to the register as it is a directory not a file")
 }
 
 stop_quietly <- function() {

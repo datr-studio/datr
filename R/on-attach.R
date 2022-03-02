@@ -6,6 +6,7 @@
 .state <- new.env(parent = emptyenv())
 .state$raw <- NULL
 .state$tidy <- NULL
+.state$external_file_types <- c("doc", "docx", "pdf")
 
 .onAttach <- function(libname, pkgname) { # nolint
   if (has_desc() && has_tidy_data()) {
@@ -31,7 +32,7 @@ has_tidy_data <- function() {
 load_register <- function(reg_type) {
   reg <- paste0(reg_type, "-register.csv")
   filename <- file.path(get_root(), "data", reg)
-  vroom::vroom(filename, delim = ",", col_types = "ccc")
+  vroom::vroom(filename, delim = ",", col_types = "cccc")
 }
 
 get_register <- function(reg_type) {
@@ -68,5 +69,3 @@ save_register <- function(data, reg_type) {
 }
 
 #' @import magrittr
-
-

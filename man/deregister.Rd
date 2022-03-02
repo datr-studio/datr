@@ -4,12 +4,12 @@
 \alias{deregister}
 \title{Deregister data from data registry}
 \usage{
-deregister(name, rm = TRUE)
+deregister(name, reg_type = "both")
 }
 \arguments{
 \item{name}{Name of data file.}
 
-\item{rm}{Logical. Whether to remove the file as well.}
+\item{reg_type}{Data types to remove: raw, tidy, both.}
 }
 \description{
 This function will delete the named file from the data register, and will remove the file from disk as well (unless this is turned off)

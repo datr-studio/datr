@@ -1,23 +1,23 @@
 #' @export
 search_raw <- function(name) {
   .state$raw %>%
-    dplyr::filter(strdetc(.data$name, .env$name))
+    dplyr::filter(strdetc(tolower(.data$name), .env$name))
 }
 
 #' @export
 search_tidy <- function(name) {
   .state$tidy %>%
-    dplyr::filter(strdetc(.data$name, .env$name))
+    dplyr::filter(strdetc(tolower(.data$name), .env$name))
 }
 
 #' @export
-raw_by_source <- function(source) {
+search_source_raw <- function(source) {
   .state$raw %>%
-    dplyr::filter(strdetc(.data$source, .env$source))
+    dplyr::filter(strdetc(tolower(.data$source), .env$source))
 }
 
 #' @export
-tidy_by_source <- function(source) {
+search_source_tidy <- function(source) {
   .state$raw %>%
-    dplyr::filter(strdetc(.data$source, .env$source))
+    dplyr::filter(strdetc(tolower(.data$source), .env$source))
 }

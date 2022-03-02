@@ -26,4 +26,5 @@ Imports:
     cli,
     rlang,
     saucer,
-    rstudioapi
+    rstudioapi,
+    tidyxl
