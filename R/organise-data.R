@@ -67,8 +67,8 @@ save_tidy <- function(data, name, version, source = NULL) {
   name <- paste0(name, "-", standardise_filename(version))
   append_to_register("tidy", name, version, source, "fe")
   organise_file_tree("tidy")
-  sourcedir <- standardise_filename(source)
-  filepath <- file.path(get_root(), "data", "tidy", sourcedir, paste0(name, ".fe"))
+  source_dir <- standardise_filename(source)
+  filepath <- file.path(get_root(), "data", "tidy", source_dir, paste0(name, ".fe"))
   feather::write_feather(data, filepath)
   cli::cli_alert_success("{.val {name}} saved to tidy data.")
 }
@@ -118,7 +118,8 @@ append_to_register <- function(reg_type, name, version, source, ext) {
 
 #' Deregister data from data registry
 #'
-#' This function will delete the named file from the data register, and will remove the file from disk as well (unless this is turned off)
+#' This function will delete the named file from the data register, and will
+#' remove the file from disk as well (unless this is turned off)
 #'
 #' @param name Name of data file.
 #' @param reg_type Data types to remove: raw, tidy, both.
@@ -145,13 +146,17 @@ deregister <- function(name, reg_type) {
 
 #' Load Tidy/Raw get your data smartly
 #'
-#' These functions assume that your data has been registered into the datrstudio data management system. If not, do that first. They can handle file types of .csv, .tsv, .fe, & excel.
+#' These functions assume that your data has been registered into the datrstudio
+#' data management system. If not, do that first. They can handle file types of
+#' .csv, .tsv, .fe, & excel.
 #'
-#' Note that the `load_raw_cells()` variant enables an excel type to be loaded as xlsx_cells for further manipulation (e.g. via the brilliant unpivotr package).
+#' Note that the `load_raw_cells()` variant enables an excel type to be loaded
+#'  as xlsx_cells for further manipulation (e.g. via the brilliant unpivotr package).
 #'
 #' @name loaders
 #'
-#' @param name Name of filename to extract. File extensions are unneccesary and will be inferred. Use only if filenames are ambiguous.
+#' @param name Name of filename to extract. File extensions are unnecessary and
+#' will be inferred. Use only if filenames are ambiguous.
 #'
 #' @return A tibble.
 #'
@@ -281,7 +286,7 @@ process_data_rename <- function(from, to, reg_type) {
   original_meta <- get_metadata(from, reg_type)
   source <- standardise_filename(original_meta$source)
   version <- standardise_filename(original_meta$version)
-  to <- standardise_filename(strem(to, version))
+  to <- standardise_filename(str_rem(to, version))
   to <- paste0(to, "-", version)
   reg <- get_register("raw")
   reg$name <- ifelse(reg$name == from, to, reg$name)
@@ -299,8 +304,8 @@ process_data_rename <- function(from, to, reg_type) {
 # Path helpers ---------------------------------------------------------------
 #'
 standardise_filename <- function(x) {
-  strepl(x, " ", "-") %>%
-    strepl("_", "-") %>%
+  str_repl(x, " ", "-") %>%
+    str_repl("_", "-") %>%
     tolower()
 }
 
@@ -320,8 +325,8 @@ organise_file_tree <- function(reg_type, source) {
 
 create_source_dir <- function(source, reg_type) {
   source <- standardise_filename(source)
-  dirpath <- file.path(get_root(), "data", reg_type, source)
-  if (!dir.exists(dirpath)) dir.create(dirpath)
+  path <- file.path(get_root(), "data", reg_type, source)
+  if (!dir.exists(path)) dir.create(path)
 }
 
 remove_source_dir <- function(source, reg_type) {

@@ -38,7 +38,7 @@ abort_incorrect_version <- function(version) {
 
 abort_multiple_sources <- function(name) {
   cli::cli_alert_danger("Error: A source for {.val {name}} cannot be determined.")
-  cli::cli_text(cli::col_grey("The dataframe contains multiple sources."))
+  cli::cli_text(cli::col_grey("The data frame contains multiple sources."))
   stop_quietly()
 }
 
@@ -46,7 +46,7 @@ abort_no_source <- function(name) {
   cli::cli_alert_danger("Error: A source for {.val {name}} cannot be determined.")
   cli::cli_text(
     cli::col_grey(
-      "The dataframe does not contains a source column and non was specified."
+      "The data frame does not contains a source column and non was specified."
     )
   )
   stop_quietly()

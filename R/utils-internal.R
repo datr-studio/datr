@@ -14,13 +14,13 @@
 # Regex ---------------------------------------------------------------
 #'
 
-strext <- function(x, y) regmatches(x, regexpr(y, x))
+str_ext <- function(x, y) regmatches(x, regexpr(y, x))
 
-strepl <- function(x, y, z) gsub(y, z, x)
+str_repl <- function(x, y, z) gsub(y, z, x)
 
-strem <- function(x, y) gsub(y, "", x)
+str_rem <- function(x, y) gsub(y, "", x)
 
-strdetc <- function(x, y) grepl(y, x)
+in_str <- function(x, y) grepl(y, x)
 
 # Paths ---------------------------------------------------------------
 #'
@@ -87,26 +87,26 @@ rename_dir <- function(from, to) {
 open_file <- function(path) rstudioapi::navigateToFile(path)
 
 relative_path <- function(path) {
-  strem(path, paste0(get_root(), "/"))
+  str_rem(path, paste0(get_root(), "/"))
 }
 
 #' @importFrom  tools file_path_sans_ext
 base_name <- function(path) tools::file_path_sans_ext(basename(path))
 
 base_project_dir <- function(path) {
-  sans_root <- strem(path, paste0(get_root(), "/"))
-  sans_tail <- strem(sans_root, "\\/.+")
+  sans_root <- str_rem(path, paste0(get_root(), "/"))
+  sans_tail <- str_rem(sans_root, "\\/.+")
   sans_tail
 }
 
 base_subdir <- function(path) {
-  sans_root <- strem(path, paste0(get_root(), "/"))
-  sans_base <- strem(sans_root, paste0(base_project_dir(path), "/"))
-  sans_tail <- strem(sans_base, "\\/.+")
+  sans_root <- str_rem(path, paste0(get_root(), "/"))
+  sans_base <- str_rem(sans_root, paste0(base_project_dir(path), "/"))
+  sans_tail <- str_rem(sans_base, "\\/.+")
   sans_tail
 }
 
-rm_trailing_slash <- function(x) strem(x, "\\/$")
+rm_trailing_slash <- function(x) str_rem(x, "\\/$")
 
 
 apply_func_either_both <- function(f, reg_type, ...) {
