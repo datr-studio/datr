@@ -177,8 +177,6 @@ load_raw <- function(name, ...) {
 #' @export
 #' @rdname loaders
 #' @importFrom tidyxl xlsx_cells
-#'
-#'
 load_raw_cells <- function(name, ...) {
   if (!is_registered(name, "raw")) abort_unregistered(name, "raw")
   file <- get_register("raw") %>%
@@ -219,10 +217,10 @@ load_file <- function(name, reg_type, ...) {
 get_reader <- function(ext) {
   switch(ext,
     "fe" = function(f, ...) feather::read_feather(f, ...),
-    "csv" = ,
+    "csv" = , # nolint
     "tsv" = function(f, ...) vroom::vroom(f, show_col_types = FALSE, ...),
-    "xls" = ,
-    "xlsx" = ,
+    "xls" = , # nolint
+    "xlsx" = , # nolint
     "xlsm" = function(f, ...) readxl::read_excel(f, ...),
     stop(abort_unsupported_file(ext))
   )
@@ -371,15 +369,7 @@ get_metadata <- function(name, reg_type) {
     dplyr::filter(.data$name == .env$name)
 }
 
-#' @export
-get_filepath <- function(name, reg_type) {
-  metadata <- get_metadata(name, reg_type)
-  source_dir <- get_source_dir(name, reg_type)
-  filepath <- file.path(
-    get_root(), "data", reg_type, source_dir, paste0(name, ".", metadata$ext)
-  )
-  filepath
-}
+
 
 open_external_file <- function(path, ext) {
   if (Sys.info()["sysname"] == "Windows") {

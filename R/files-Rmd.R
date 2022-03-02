@@ -1,4 +1,3 @@
-
 #' Setup Rmarkdown consistently
 #'
 #' Ensures that Rmarkdown is setup the same, even if the setup itself changes in the future.

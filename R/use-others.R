@@ -24,7 +24,6 @@ use_tidy_data <- function(path = ".") {
 }
 
 
-
 #' @export
 use_validation <- function(path = ".") {
   mkdir(file.path(path, "validation", "analysis"))

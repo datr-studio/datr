@@ -14,14 +14,18 @@ load_raw(name, ...)
 load_raw_cells(name, ...)
 }
 \arguments{
-\item{name}{Name of filename to extract. File extensions are unneccesary and will be inferred. Use only if filenames are ambiguous.}
+\item{name}{Name of filename to extract. File extensions are unnecessary and
+will be inferred. Use only if filenames are ambiguous.}
 }
 \value{
 A tibble.
 }
 \description{
-These functions assume that your data has been registered into the datrstudio data management system. If not, do that first. They can handle file types of .csv, .tsv, .fe, & excel.
+These functions assume that your data has been registered into the datrstudio
+data management system. If not, do that first. They can handle file types of
+.csv, .tsv, .fe, & excel.
 }
 \details{
-Note that the \code{load_raw_cells()} variant enables an excel type to be loaded as xlsx_cells for further manipulation (e.g. via the brilliant unpivotr package).
+Note that the \code{load_raw_cells()} variant enables an excel type to be loaded
+as xlsx_cells for further manipulation (e.g. via the brilliant unpivotr package).
 }

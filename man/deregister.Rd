@@ -12,5 +12,6 @@ deregister(name, reg_type)
 \item{reg_type}{Data types to remove: raw, tidy, both.}
 }
 \description{
-This function will delete the named file from the data register, and will remove the file from disk as well (unless this is turned off)
+This function will delete the named file from the data register, and will
+remove the file from disk as well (unless this is turned off)
 }

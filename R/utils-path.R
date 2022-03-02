@@ -1,11 +1,3 @@
-#' Find data directory
-#'
-#' `get_root()` recursively searches backwards through the working directories to find
-#'  a file named DESCRIPTION. Will try up to 4 times before giving up.
-#'
-#' @export
-#'
-#' @return root path as character or NULL.
 get_root <- function() {
   oldwd <- getwd()
   on.exit(setwd(oldwd))
@@ -20,5 +12,4 @@ get_root <- function() {
 }
 
 
-#' @export
 set_root <- function() setwd(get_root())

@@ -1,3 +1,6 @@
+# Handle Abort ---------------------------------------------------------------
+#'
+
 #' @import cli
 abort_non_unique_name <- function(name, reg_type) {
   cli::cli_alert_danger("Error: {.val {name}} already exists in the {reg_type} data register.")
@@ -57,6 +60,18 @@ abort_no_such_source <- function(name, reg_type) {
   stop_quietly()
 }
 
+stop_quietly <- function() {
+  options(show.error.messages = FALSE)
+  on.exit(options(show.error.messages = TRUE))
+  stop()
+}
+
+# Handle Warnings ---------------------------------------------------------------
+#'
+#'
+#'
+
+
 warn_unregistered <- function(name, reg_type) {
   cli::cli_alert_warning("{.val {name}} was not found in {reg_type} data.")
 }
@@ -85,7 +100,8 @@ warn_skipping_dir <- function(name) {
   cli::cli_alert_warning("Warning: {.path {name}} can't be added to the register as it is a directory not a file")
 }
 
-
+# User Input ---------------------------------------------------------------
+#'
 
 confirm_action <- function(msg, default_yes = TRUE) {
   q <- ifelse(default_yes, "[Y/n]", "[y/N]")
@@ -125,10 +141,4 @@ get_proj_name <- function() {
     res <- readLines("stdin", n = 1)
   }
   res
-}
-
-stop_quietly <- function() {
-  options(show.error.messages = FALSE)
-  on.exit(options(show.error.messages = TRUE))
-  stop()
 }

@@ -51,5 +51,3 @@ save_register <- function(data, reg_type) {
   filename <- file.path(get_root(), "data", reg)
   feather::write_feather(data, filename)
 }
-
-#' @import magrittr
