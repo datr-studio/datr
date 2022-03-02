@@ -107,3 +107,13 @@ base_subdir <- function(path) {
 }
 
 rm_trailing_slash <- function(x) strem(x, "\\/$")
+
+
+apply_func_either_both <- function(f, reg_type, ...) {
+  if (!reg_type == "both") {
+    f(..., reg_type)
+  } else {
+    f(..., "raw")
+    f(..., "tidy")
+  }
+}

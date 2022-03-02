@@ -9,13 +9,17 @@ use_desc <- function(proj_name, path = ".") {
 use_data <- function(path = ".") {
   mkdir(file.path(path, "data", "raw"))
   mkdir(file.path(path, "data", "tidy"))
-  feather::write_feather(
-    tibble::tibble(name = character(), version = character(), source = character(), ext = character()),
-    file.path(path, "data", ".raw.fe")
+  reg <- tibble::tibble(
+    name = character(),
+    version = character(),
+    source = character(),
+    ext = character()
   )
   feather::write_feather(
-    tibble::tibble(name = character(), version = character(), source = character()),
-    file.path(path, "data", ".tidy.fe")
+    reg, file.path(path, "data", ".raw.fe")
+  )
+  feather::write_feather(
+    reg, file.path(path, "data", ".tidy.fe")
   )
 }
 

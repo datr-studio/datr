@@ -44,22 +44,8 @@ get_register <- function(reg_type) {
 }
 
 update_register <- function(data, reg_type) {
-  switch(reg_type,
-    raw = update_register_raw(data),
-    tidy = update_register_tidy(data),
-    stop("Unknown register type")
-  )
-}
-
-
-update_register_raw <- function(data) {
-  .state$raw <- data
-  save_register(data, "raw")
-}
-
-update_register_tidy <- function(data) {
-  .state$tidy <- data
-  save_register(data, "tidy")
+  .state[[reg_type]] <- data
+  save_register(data, reg_type)
 }
 
 save_register <- function(data, reg_type) {
