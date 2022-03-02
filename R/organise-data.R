@@ -280,20 +280,19 @@ rename_data <- function(original_name, new_name, reg_type) {
 }
 
 process_data_rename <- function(reg_type, from, to) {
-  browser()
-  if (!is_registered(from, "raw")) abort_unregistered(from)
+  if (!is_registered(from, reg_type)) abort_unregistered(from, reg_type)
   original_meta <- get_metadata(from, reg_type)
   source <- standardise_filename(original_meta$source)
   version <- standardise_filename(original_meta$version)
   to <- standardise_filename(str_rem(to, version))
   to <- paste0(to, "-", version)
-  reg <- get_register("raw")
+  reg <- get_register(reg_type)
   reg$name <- ifelse(reg$name == from, to, reg$name)
   update_register(reg, reg_type)
   from <- paste0(from, ".", original_meta$ext)
   to <- paste0(to, ".", original_meta$ext)
-  old_filename <- file.path(file.path(get_root(), "data", "raw", source, from))
-  new_filename <- file.path(file.path(get_root(), "data", "raw", source, to))
+  old_filename <- file.path(file.path(get_root(), "data", reg_type, source, from))
+  new_filename <- file.path(file.path(get_root(), "data", reg_type, source, to))
   file.copy(old_filename, new_filename)
   unlink(old_filename)
 }
