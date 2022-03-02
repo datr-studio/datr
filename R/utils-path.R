@@ -1,6 +1,6 @@
 get_root <- function() {
-  oldwd <- getwd()
-  on.exit(setwd(oldwd))
+  old <- getwd()
+  on.exit(setwd(old))
   for (attempt in 1:4) {
     if (file.exists("DESCRIPTION")) {
       return(getwd())
