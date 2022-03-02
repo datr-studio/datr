@@ -103,3 +103,5 @@ apply_func_either_both <- function(f, reg_type, ...) {
     f("tidy", ...)
   }
 }
+
+`%||%` <- function(a, b) ifelse(!is.null(a), a, b) # nolint
