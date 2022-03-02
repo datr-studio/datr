@@ -4,7 +4,7 @@
 \alias{rename_source}
 \title{Rename a source}
 \usage{
-rename_source(original_name, new_name, reg_type = "both")
+rename_source(original_name, new_name, reg_type)
 }
 \arguments{
 \item{original_name}{Original source name.}

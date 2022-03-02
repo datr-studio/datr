@@ -75,7 +75,7 @@ warn_no_data <- function() {
   cli::cli_alert_danger("{.pkg datr} requires a tidy project structure to work correctly.")
   msg <- cli::format_inline("Continuing will set up tidy data now.")
   if (confirm_action(msg)) {
-    use_data()
+    use_tidy_data()
   } else {
     stop_quietly()
   }

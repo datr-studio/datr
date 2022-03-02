@@ -4,7 +4,7 @@
 \alias{deregister}
 \title{Deregister data from data registry}
 \usage{
-deregister(name, reg_type = "both")
+deregister(name, reg_type)
 }
 \arguments{
 \item{name}{Name of data file.}

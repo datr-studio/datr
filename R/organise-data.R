@@ -127,7 +127,6 @@ append_to_register <- function(reg_type, name, version, source, ext) {
 #'
 #' @export
 deregister <- function(name, reg_type) {
-  browser()
   if (!is_registered(name, reg_type)) abort_unregistered(name, reg_type)
   unlink(get_filepath(name, reg_type))
   get_register(reg_type) %>%

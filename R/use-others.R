@@ -6,7 +6,7 @@ use_desc <- function(proj_name, path = ".") {
 }
 
 #' @export
-use_data <- function(path = ".") {
+use_tidy_data <- function(path = ".") {
   mkdir(file.path(path, "data", "raw"))
   mkdir(file.path(path, "data", "tidy"))
   reg <- tibble::tibble(
