@@ -61,17 +61,70 @@ warn_unregistered <- function(name, reg_type) {
   cli::cli_alert_warning("{.val {name}} was not found in {reg_type} data.")
 }
 
-warn_not_tidy <- function() {
-  cli::cli_alert_warning("Warning: {.pkg datr} requires a tidy project structure to work correctly.")
-  cli::cli_text(
-    cli::col_silver(
-      "Try `datr::use_desc()` and `datr::use_data()` to set your project up correctly."
-    )
-  )
+warn_no_desc <- function() {
+  cli::cli_alert_danger("{.pkg datr} requires a tidy project structure to work correctly.")
+  msg <- cli::format_inline("Continuing will set up a `DESCRIPTION` file.")
+  if (confirm_action(msg)) {
+    use_desc(get_proj_name())
+  } else {
+    stop_quietly()
+  }
+}
+
+warn_no_data <- function() {
+  cli::cli_alert_danger("{.pkg datr} requires a tidy project structure to work correctly.")
+  msg <- cli::format_inline("Continuing will set up tidy data now.")
+  if (confirm_action(msg)) {
+    use_data()
+  } else {
+    stop_quietly()
+  }
 }
 
 warn_skipping_dir <- function(name) {
   cli::cli_alert_warning("Warning: {.path {name}} can't be added to the register as it is a directory not a file")
+}
+
+
+
+confirm_action <- function(msg, default_yes = TRUE) {
+  q <- ifelse(default_yes, "[Y/n]", "[y/N]")
+
+  confirmation_prompt <- cli::format_inline(
+    "{cli::symbol$pointer}{cli::symbol$pointer}{cli::symbol$pointer} {.strong Do you want to continue {q} ?}"
+  )
+  cat(
+    cli::col_yellow("!"), cli::format_inline(msg), "\n"
+  )
+  if (interactive()) {
+    res <- readline(confirmation_prompt)
+  } else {
+    cat(confirmation_prompt)
+    res <- readLines("stdin", n = 1)
+  }
+  parse_res(res, default_yes)
+}
+
+parse_res <- function(res, default_yes) {
+  res <- tolower(res)
+  if (nchar(res) == 0) {
+    return(default_yes)
+  } else if (res == "y") {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}
+
+get_proj_name <- function() {
+  confirmation_prompt <- "Enter your project name: "
+  if (interactive()) {
+    res <- readline(confirmation_prompt)
+  } else {
+    cat(confirmation_prompt)
+    res <- readLines("stdin", n = 1)
+  }
+  res
 }
 
 stop_quietly <- function() {

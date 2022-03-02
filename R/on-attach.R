@@ -9,12 +9,10 @@
 .state$external_file_types <- c("doc", "docx", "pdf")
 
 .onAttach <- function(libname, pkgname) { # nolint
-  if (has_desc() && has_tidy_data()) {
-    .state$raw <- load_register("raw")
-    .state$tidy <- load_register("tidy")
-  } else {
-    warn_not_tidy()
-  }
+  if (!has_desc()) warn_no_desc()
+  if (!has_tidy_data()) warn_no_data()
+  .state$raw <- load_register("raw")
+  .state$tidy <- load_register("tidy")
 }
 
 
