@@ -97,9 +97,9 @@ rm_trailing_slash <- function(x) str_rem(x, "\\/$")
 
 apply_func_either_both <- function(f, reg_type, ...) {
   if (!reg_type == "both") {
-    f(..., reg_type)
+    f(reg_type, ...)
   } else {
-    f(..., "raw")
-    f(..., "tidy")
+    f("raw", ...)
+    f("tidy", ...)
   }
 }

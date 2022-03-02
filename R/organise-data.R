@@ -279,7 +279,8 @@ rename_data <- function(original_name, new_name, reg_type) {
   cli::cli_alert_success("{original_name} has been renamed to {.val {new_name}}.")
 }
 
-process_data_rename <- function(from, to, reg_type) {
+process_data_rename <- function(reg_type, from, to) {
+  browser()
   if (!is_registered(from, "raw")) abort_unregistered(from)
   original_meta <- get_metadata(from, reg_type)
   source <- standardise_filename(original_meta$source)
