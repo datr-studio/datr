@@ -25,7 +25,6 @@ Imports:
     purrr,
     cli,
     rlang,
-    saucer,
     rstudioapi,
     tidyxl,
     feather

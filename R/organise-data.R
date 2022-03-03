@@ -92,7 +92,7 @@ replace_raw <- function(filepath, name) {
   if (!is_registered(name, "raw")) abort_unregistered(name, "raw")
   metadata <- get_metadata_raw(name)
   deregister_raw(name)
-  save_raw(filepath, name, metadata$version, metadata$source)
+  save_raw(filepath, metadata$version, metadata$source)
 }
 
 #' @export
