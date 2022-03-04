@@ -1,5 +1,5 @@
 Package: datr
-Title: Organise projects for clean, repeatable, long-living productivity.
+Title: Organise projects for clean, repeatable, long-living productivity
 Version: 0.0.0.9000
 Authors@R: 
     person("Josh", "Firth", , "drjoshfirth@gmailcom", role = c("aut", "cre"),
@@ -7,7 +7,6 @@ Authors@R:
 Description: Like Hadley Wickham's `usethis` package, this provides a set of `use_X` functions and other helpers that create useful and easy ways to ensure standardised, organised and repeatable proceses. MacOS or Windows agnostic.
 License: GPL (>= 3)
 Suggests: 
-    knitr,
     rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
@@ -27,4 +26,10 @@ Imports:
     rlang,
     rstudioapi,
     tidyxl,
-    feather
+    feather,
+    ggplot2,
+    zibas,
+    knitr,
+    readxl,
+    stringr,
+    janitor

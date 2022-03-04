@@ -59,7 +59,7 @@ write_file <- function(content, path, open = TRUE) {
 
 rename_dir <- function(from, to) {
   if (dir.exists(from)) {
-    dir.create(to)
+    if (!dir.exists(to)) dir.create(to)
     files <- list.files(from, full.names = FALSE, recursive = TRUE)
     purrr::walk(files, ~ file.copy(
       file.path(from, .x), file.path(to, .x)

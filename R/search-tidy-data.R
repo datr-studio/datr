@@ -33,7 +33,7 @@ search_tidy <- function(name) {
 #'
 #' Look up a key word in both registers for matching sources
 #'
-#' @param  name A keyword to search the source fields.
+#' @param  source A keyword to search the source fields.
 #' @export
 #' @importFrom dplyr bind_rows
 #'

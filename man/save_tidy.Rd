@@ -11,6 +11,8 @@ save_tidy(data, name, version, source = NULL)
 
 \item{name}{Name of the data frame}
 
+\item{version}{Data version (for reference)}
+
 \item{source}{Name of the source for reference. Can be inferred from a column called \code{source} if there is one.}
 }
 \description{

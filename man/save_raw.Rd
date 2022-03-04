@@ -9,6 +9,8 @@ save_raw(filepath, version, source)
 \arguments{
 \item{filepath}{Path to file to add.}
 
+\item{version}{Data version (for reference)}
+
 \item{source}{Source name.}
 }
 \description{

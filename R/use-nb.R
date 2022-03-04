@@ -8,7 +8,7 @@ use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
   filename <- paste0(filename %||% make_filename(title), ".Rmd")
 
   # Confirm base path exists
-  root <- datr::get_root()
+  root <- get_root()
   if (export) {
     path <- file.path(root, "export")
     mkdir(path)

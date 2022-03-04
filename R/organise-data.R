@@ -8,6 +8,7 @@
 #' Registers raw data into datrstudio project and saves to file structure.
 #'
 #' @param filepath Path to file to add.
+#' @param version Data version (for reference)
 #' @param source Source name.
 #'
 #' @importFrom tools file_ext
@@ -52,6 +53,7 @@ save_raw_folder <- function(folder, version, source) {
 #'
 #' @param data A data.frame
 #' @param name Name of the data frame
+#' @param version Data version (for reference)
 #' @param source Name of the source for reference. Can be inferred from a column called `source` if there is one.
 #'
 #' @export
@@ -71,6 +73,7 @@ save_tidy <- function(data, name, version, source = NULL) {
   filepath <- file.path(get_root(), "data", "tidy", source_dir, paste0(name, ".fe"))
   feather::write_feather(data, filepath)
   cli::cli_alert_success("{.val {name}} saved to tidy data.")
+  withVisible(data)$value
 }
 
 check_source <- function(x, name) {
@@ -128,13 +131,16 @@ append_to_register <- function(reg_type, name, version, source, ext) {
 #'
 #' @export
 deregister <- function(name, reg_type) {
-  if (!is_registered(name, reg_type)) abort_unregistered(name, reg_type)
-  unlink(get_filepath(name, reg_type))
-  get_register(reg_type) %>%
-    dplyr::filter(.data$name != .env$name) %>%
-    update_register(reg_type)
-  cli::cli_alert_success("{.val {name}} has been removed from {reg_type} data.")
-  organise_file_tree(reg_type)
+  if (!is_registered(name, reg_type)) {
+    warn_unregistered(name, reg_type)
+  } else {
+    unlink(get_filepath(name, reg_type))
+    get_register(reg_type) %>%
+      dplyr::filter(.data$name != .env$name) %>%
+      update_register(reg_type)
+    cli::cli_alert_success("{.val {name}} has been removed from {reg_type} data.")
+    organise_file_tree(reg_type)
+  }
 }
 
 
@@ -249,7 +255,7 @@ rename_source <- function(original_name, new_name, reg_type) {
   cli::cli_alert_success("{original_name} has been renamed to {.val {new_name}}.")
 }
 
-process_source_rename <- function(from, to, reg_type) {
+process_source_rename <- function(reg_type, from, to) {
   if (!is_valid_source(from, reg_type)) abort_no_such_source(from, reg_type)
   reg <- get_register(reg_type)
   reg$source <- ifelse(reg$source == from, to, reg$source)

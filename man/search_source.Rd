@@ -7,7 +7,7 @@
 search_source(source)
 }
 \arguments{
-\item{name}{A keyword to search the source fields.}
+\item{source}{A keyword to search the source fields.}
 }
 \value{
 A tibble.
