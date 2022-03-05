@@ -58,7 +58,7 @@ save_raw_folder <- function(folder, version, source) {
 #'
 #' @export
 #'
-save_tidy <- function(data, name, version, source = NULL) {
+save_tidy <- function(data, name, version, source = NULL, visible = FALSE) {
   # Arg checking
   check_type(data, "data.frame")
   check_type(name, "character")
@@ -73,7 +73,7 @@ save_tidy <- function(data, name, version, source = NULL) {
   filepath <- file.path(get_root(), "data", "tidy", source_dir, paste0(name, ".fe"))
   feather::write_feather(data, filepath)
   cli::cli_alert_success("{.val {name}} saved to tidy data.")
-  withVisible(data)$value
+  if (visible) withVisible(data)$value else invisible(data)
 }
 
 check_source <- function(x, name) {

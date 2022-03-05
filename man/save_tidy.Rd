@@ -4,7 +4,7 @@
 \alias{save_tidy}
 \title{Save Tidy}
 \usage{
-save_tidy(data, name, version, source = NULL)
+save_tidy(data, name, version, source = NULL, visible = FALSE)
 }
 \arguments{
 \item{data}{A data.frame}
