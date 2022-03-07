@@ -59,7 +59,7 @@ source_folder <- function(folder, incl = NULL, excl = NULL, silent = FALSE, verb
       }
 
 
-      if (verbose) cli::cli_alert_info("Sourcing {path}")
+      if (verbose) cli::cli_alert_info("Sourcing {relative_path(path)}")
 
       tryCatch(
         {
@@ -80,17 +80,17 @@ source_folder <- function(folder, incl = NULL, excl = NULL, silent = FALSE, verb
       )
     }
   }
-
+  print_path <- relative_path(folder)
   if (!silent) {
     if (nfiles() == 0) {
       cli::cli_alert_warning("No R files could be found in {.path {folder}}.")
     } else {
       if (ndirs() > 0) {
         cli::cli_alert_success(
-          "Sourced {.val {nfiles()}} file{?s} from {.path {folder}} (including {.val {ndirs()}} subdirector{?y/ies})."
+          "Sourced {.val {nfiles()}} file{?s} from {.path {print_path}} (including {.val {ndirs()}} subdirector{?y/ies})"
         )
       } else {
-        cli::cli_alert_success("Sourced {.val {nfiles()}} file{?s} from {.path {folder}}.")
+        cli::cli_alert_success("Sourced {.val {nfiles()}} file{?s} from {.path {print_path}}")
       }
     }
   }

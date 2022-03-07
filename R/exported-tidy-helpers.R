@@ -1,14 +1,12 @@
 #' Source Helpers
 #'
-#' `source_utils()`, `source_model()`, and `source_r()`. Under the hood, these
-#' function use `source_folder()`.
-#'
-#' These functions assume that a tidy project structure according to datr principles.
+#' `source_xx()` are helper functions that assist with quickly sourcing the content of a
+#' folder with a tidy project structure. Under the hood, these function use `source_folder()`.
 #'
 #' @name source_helpers
 #'
 #' @param subdir If required, a subdir can be specified.
-#' @param ... Optional arguments to pass on to source_folder().
+#' @inheritDotParams source_folder
 
 
 #' @rdname source_helpers
@@ -29,11 +27,18 @@ source_model <- function(subdir = "", ...) {
   source_helper(file.path("model"), subdir, ...)
 }
 
-source_helper <- function(dir, subdir, ...) {
-  source_folder(file.path(get_root(), dir, subdir), ...)
+#' @rdname source_helpers
+#' @export
+source_math <- function(subdir = "", ...) {
+  source_helper(file.path("math"), subdir, ...)
 }
 
-load_as_root <- function(path) file.path()
+
+source_helper <- function(dir, subdir, ...) {
+  subpath <- ifelse(nchar(subdir) > 0, file.path(dir, subdir), dir)
+  source_folder(file.path(get_root(), subpath), ...)
+}
+
 
 #' Get file path of tidy data
 #'

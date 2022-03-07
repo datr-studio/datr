@@ -5,6 +5,7 @@
 \alias{source_utils}
 \alias{source_r}
 \alias{source_model}
+\alias{source_math}
 \title{Source Helpers}
 \usage{
 source_utils(subdir = "", ...)
@@ -12,16 +13,24 @@ source_utils(subdir = "", ...)
 source_r(subdir = "", ...)
 
 source_model(subdir = "", ...)
+
+source_math(subdir = "", ...)
 }
 \arguments{
 \item{subdir}{If required, a subdir can be specified.}
 
-\item{...}{Optional arguments to pass on to source_folder().}
+\item{...}{
+  Arguments passed on to \code{\link[=source_folder]{source_folder}}
+  \describe{
+    \item{\code{folder}}{The directory to source.}
+    \item{\code{incl}}{An optional regex pattern to use to filter what is included.}
+    \item{\code{excl}}{An optional regex pattern to use to exclude files or folders from the search.}
+    \item{\code{stop_on_error}}{If \code{TRUE} (default), code will stop on error, with info. If false, only a warning will be issued.}
+    \item{\code{silent}}{If \code{TRUE} (default), information is given about the number of files sourced.}
+    \item{\code{verbose}}{If true, each file will be printed to console on sourcing.}
+  }}
 }
 \description{
-\code{source_utils()}, \code{source_model()}, and \code{source_r()}. Under the hood, these
-function use \code{source_folder()}.
-}
-\details{
-These functions assume that a tidy project structure according to datr principles.
+\code{source_xx()} are helper functions that assist with quickly sourcing the content of a
+folder with a tidy project structure. Under the hood, these function use \code{source_folder()}.
 }
