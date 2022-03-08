@@ -28,7 +28,7 @@ rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
 
   # Plot Settings
   library(zibas)
-  ggplot2::theme_set(zibas::theme_ziba())
+  make_beautiful_plots()
   options("zibas.savepath" = file.path(root_dir, "export", "figures"))
   options(pillar.print_min = 5)
 

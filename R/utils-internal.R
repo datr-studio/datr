@@ -31,7 +31,8 @@ rstudio_stfu <- function(f, ...) {
 #' @importFrom rlang expr_text enexpr
 check_type <- function(arg, exp_type) {
   arg_name <- rlang::expr_text(rlang::enexpr(arg))
-  if (!inherits(arg, exp_type)) {
+  classes = paste0(class(arg), collapse = " ")
+  if (!in_str(classes, exp_type)) {
     abort_arg_wrong_type(arg, arg_name, exp_type)
   }
 }

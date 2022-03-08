@@ -90,19 +90,39 @@ check_source <- function(x, name) {
   source
 }
 
+
+
+#' Replace a data frame in the raw register.
+#'
+#' Removes the registered data with the same name and replaces it with the specified file.
+#'
+#' @param filepath Path to replacement file.
+#' @param name Name of data file to replace.
+#'
 #' @export
 replace_raw <- function(filepath, name) {
   if (!is_registered(name, "raw")) abort_unregistered(name, "raw")
-  metadata <- get_metadata_raw(name)
+  metadata <- get_metadata(name, "raw")
   deregister_raw(name)
+  name <- str_rem(name, paste0("-", metadata$version))
   save_raw(filepath, metadata$version, metadata$source)
 }
 
+
+
+#' Replace a data frame in the tidy register.
+#'
+#' Removes the registered data with the same name and replaces it with the given data.
+#'
+#' @param data A data.frame.
+#' @param name Name of data file to replace.
+#'
 #' @export
 replace_tidy <- function(data, name) {
   if (!is_registered(name, "tidy")) abort_unregistered(name, "tidy")
-  metadata <- get_metadata_tidy(name)
+  metadata <- get_metadata(name, "tidy")
   deregister_tidy(name)
+  name <- str_rem(name, paste0("-", metadata$version))
   save_tidy(data, name, metadata$version, metadata$source)
 }
 
@@ -143,6 +163,13 @@ deregister <- function(name, reg_type) {
   }
 }
 
+#' @rdname deregister
+#' @export
+deregister_tidy <- function(name) deregister(name, "tidy")
+
+#' @rdname deregister
+#' @export
+deregister_raw <- function(name) deregister(name, "raw")
 
 # Loaders ---------------------------------------------------------------
 #'
@@ -154,7 +181,7 @@ deregister <- function(name, reg_type) {
 #'
 #' These functions assume that your data has been registered into the datrstudio
 #' data management system. If not, do that first. They can handle file types of
-#' .csv, .tsv, .fe, & excel.
+#' .csv, .tsv, .fe, yaml, & excel.
 #'
 #' Note that the `load_raw_cells()` variant enables an excel type to be loaded
 #'  as xlsx_cells for further manipulation (e.g. via the brilliant unpivotr package).
@@ -208,9 +235,11 @@ load_file <- function(name, reg_type, ...) {
     open_external_file(filepath, file.ext)
   } else {
     reader <- get_reader(file$ext)
-    df <- reader(filepath, ...) %>%
-      janitor::clean_names()
-    df$source <- file$source
+    df <- reader(filepath, ...)
+    if (inherits(df, "data.frame")) {
+      df <- janitor::clean_names(df)
+      df$source <- file$source
+    }
     cli::cli_alert_success("Loaded {.path {name}} (Source: {file$source}).")
     df
   }
@@ -220,18 +249,35 @@ load_file <- function(name, reg_type, ...) {
 #' @import feather
 #' @importFrom readxl read_excel
 #' @importFrom vroom vroom
+#' @importFrom yaml read_yaml
 get_reader <- function(ext) {
   switch(ext,
     "fe" = function(f, ...) feather::read_feather(f, ...),
     "csv" = , # nolint
+    "dat" = , # nolint,
     "tsv" = function(f, ...) vroom::vroom(f, show_col_types = FALSE, ...),
     "xls" = , # nolint
     "xlsx" = , # nolint
     "xlsm" = function(f, ...) readxl::read_excel(f, ...),
+    "yaml" = , # nolint
+    "yml" = function(f, ...) yaml::read_yaml(f, ...),
     stop(abort_unsupported_file(ext))
   )
 }
 
+#' @importFrom vroom vroom_write
+#' @importFrom yaml write_yaml
+get_writer <- function(ext) {
+  switch(ext,
+    "fe" = function(data, filename) feather::write_feather(data, filename),
+    "csv" = function(data, filename) vroom::vroom_write(data, filename, delim = ","),
+    "dat" = function(data, filename) vroom::vroom_write(data, filename, delim = "\t"),
+    "tsv" = function(data, filename) vroom::vroom_write(data, filename, delim = "\t"),
+    "yaml" = , # nolint
+    "yml" = function(data, filename) yaml::write_yaml(data, filename),
+    stop(abort_unsupported_file(ext))
+  )
+}
 
 # Renaming Functions ---------------------------------------------------------------
 #'
@@ -282,7 +328,6 @@ process_source_rename <- function(reg_type, from, to) {
 rename_data <- function(original_name, new_name, reg_type) {
   reg_type <- match.arg(reg_type, c("raw", "tidy", "both"))
   apply_func_either_both(process_data_rename, reg_type, original_name, new_name)
-  cli::cli_alert_success("{original_name} has been renamed to {.val {new_name}}.")
 }
 
 process_data_rename <- function(reg_type, from, to) {
@@ -301,6 +346,7 @@ process_data_rename <- function(reg_type, from, to) {
   new_filename <- file.path(file.path(get_root(), "data", reg_type, source, to))
   file.copy(old_filename, new_filename)
   unlink(old_filename)
+  cli::cli_alert_success("{original_name} has been renamed to {.val {to}}.")
 }
 
 

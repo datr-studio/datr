@@ -28,6 +28,7 @@ abort_folder_not_found <- function(folder) {
 }
 
 abort_arg_wrong_type <- function(arg, arg_name, exp_type) {
+  exp_type <- str_repl(exp_type, "\\|", " or ")
   cli::cli_alert_danger("Error: {.var {arg_name}} must be a {exp_type}")
   cli::cli_text("You've supplied a {.cls {class(arg)}} type.")
   stop_quietly()
@@ -57,6 +58,11 @@ abort_no_source <- function(name) {
 
 abort_no_such_source <- function(name, reg_type) {
   cli::cli_alert_danger("Error: A source named {.val {name}} could not be found in the {reg_type} register.")
+  stop_quietly()
+}
+
+abort_no_file_ext <- function(name) {
+  cli::cli_alert_danger("Error: No valid file extension was found in {.val {name}}.")
   stop_quietly()
 }
 

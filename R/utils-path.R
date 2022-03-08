@@ -1,3 +1,4 @@
+#' @export
 get_root <- function() {
   old <- getwd()
   on.exit(setwd(old))
@@ -13,4 +14,3 @@ get_root <- function() {
 
 
 set_root <- function() setwd(get_root())
-

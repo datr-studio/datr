@@ -23,7 +23,7 @@ A tibble.
 \description{
 These functions assume that your data has been registered into the datrstudio
 data management system. If not, do that first. They can handle file types of
-.csv, .tsv, .fe, & excel.
+.csv, .tsv, .fe, yaml, & excel.
 }
 \details{
 Note that the \code{load_raw_cells()} variant enables an excel type to be loaded
