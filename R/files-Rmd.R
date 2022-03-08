@@ -6,6 +6,7 @@
 #' @importFrom ggplot2 theme_set
 #' @importFrom zibas theme_ziba
 #' @importFrom knitr opts_chunk
+#' @import glue
 #' @export
 rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
                       png = FALSE, pdf = FALSE) {

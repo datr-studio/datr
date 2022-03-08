@@ -11,32 +11,40 @@
 
 #' @rdname source_helpers
 #' @export
-source_utils <- function(subdir = "", ...) {
+source_utils <- function(subdir = NULL, ...) {
   source_helper(file.path("R", "utils"), subdir, ...)
 }
 
 #' @rdname source_helpers
 #' @export
-source_r <- function(subdir = "", ...) {
+source_r <- function(subdir = NULL, ...) {
   source_helper(file.path("R"), subdir, ...)
 }
 
 #' @rdname source_helpers
 #' @export
-source_model <- function(subdir = "", ...) {
+source_model <- function(subdir = NULL, ...) {
   source_helper(file.path("model"), subdir, ...)
 }
 
 #' @rdname source_helpers
 #' @export
-source_math <- function(subdir = "", ...) {
+source_math <- function(subdir = NULL, ...) {
   source_helper(file.path("math"), subdir, ...)
 }
 
+#' @rdname source_helpers
+#' @export
+source_functions <- function(subdir = NULL, ...) {
+  paths <- c(".", "functions", subdir)
+  path <- paste0(paths, collapse = .Platform$file.sep)
+  source_folder(path, ...)
+}
 
 source_helper <- function(dir, subdir, ...) {
-  subpath <- ifelse(nchar(subdir) > 0, file.path(dir, subdir), dir)
-  source_folder(file.path(get_root(), subpath), ...)
+  paths <- c(get_root(), dir, subdir)
+  path <- paste0(paths, collapse = .Platform$file.sep)
+  source_folder(path, ...)
 }
 
 

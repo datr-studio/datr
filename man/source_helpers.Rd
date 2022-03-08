@@ -6,15 +6,18 @@
 \alias{source_r}
 \alias{source_model}
 \alias{source_math}
+\alias{source_functions}
 \title{Source Helpers}
 \usage{
-source_utils(subdir = "", ...)
+source_utils(subdir = NULL, ...)
 
-source_r(subdir = "", ...)
+source_r(subdir = NULL, ...)
 
-source_model(subdir = "", ...)
+source_model(subdir = NULL, ...)
 
-source_math(subdir = "", ...)
+source_math(subdir = NULL, ...)
+
+source_functions(subdir = NULL, ...)
 }
 \arguments{
 \item{subdir}{If required, a subdir can be specified.}

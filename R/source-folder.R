@@ -35,7 +35,8 @@
 #'
 source_folder <- function(folder, incl = NULL, excl = NULL, silent = FALSE, verbose = FALSE, stop_on_error = TRUE) {
   reset_state()
-  stopifnot(is.character(folder), length(folder) == 1)
+  check_type(folder, "character")
+  check_len(folder, 1)
   if (!dir.exists(folder)) {
     cli::cli_abort("The folder '{folder}' doesn't seem to exist. Check your working directory and spelling.")
   }

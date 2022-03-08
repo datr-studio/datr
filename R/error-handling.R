@@ -27,6 +27,12 @@ abort_folder_not_found <- function(folder) {
   stop_quietly()
 }
 
+abort_arg_wrong_len <- function(arg, arg_name, exp_len) {
+  cli::cli_alert_danger("Error: {.var {arg_name}} must contain only {exp_len} element{?s}")
+  cli::cli_text("You've supplied {.val {length(arg)}} element{?s}: {arg}")
+  stop_quietly()
+}
+
 abort_arg_wrong_type <- function(arg, arg_name, exp_type) {
   exp_type <- str_repl(exp_type, "\\|", " or ")
   cli::cli_alert_danger("Error: {.var {arg_name}} must be a {exp_type}")

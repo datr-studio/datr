@@ -31,15 +31,22 @@ rstudio_stfu <- function(f, ...) {
 #' @importFrom rlang expr_text enexpr
 check_type <- function(arg, exp_type) {
   arg_name <- rlang::expr_text(rlang::enexpr(arg))
-  classes = paste0(class(arg), collapse = " ")
+  classes <- paste0(class(arg), collapse = " ")
   if (!in_str(classes, exp_type)) {
     abort_arg_wrong_type(arg, arg_name, exp_type)
   }
 }
 
+check_len <- function(arg, exp_len) {
+  arg_name <- rlang::expr_text(rlang::enexpr(arg))
+  if (!length(arg) == exp_len) abort_arg_wrong_len(arg, arg_name, exp_len)
+}
+
 check_exists <- function(filepath) {
   if (!file.exists(filepath)) abort_file_not_found(filepath)
 }
+
+
 
 is_dir <- function(path) dir.exists(path)
 

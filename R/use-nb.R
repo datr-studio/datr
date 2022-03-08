@@ -47,7 +47,7 @@ use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
   nb <- nb %>%
     replace_line(2, paste0("title: ", title)) %>%
     append_lines(get_template("rmd-setup.Rmd") %>%
-      replace_line(5, paste0("rmd_setup(", rmd_setup_params, ")")))
+      replace_line(6, paste0("rmd_setup(", rmd_setup_params, ")")))
   if (use_func) nb <- append_lines(nb, get_template("rmd-func.Rmd"))
   nb <- append_lines(nb, get_template("rmd-base-end.Rmd"))
   write_file(nb, file.path(path, filename))

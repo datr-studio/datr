@@ -143,13 +143,13 @@ append_to_register <- function(reg_type, name, version, source, ext) {
 #'
 #' This function will delete the named file from the data register, and will
 #' remove the file from disk as well (unless this is turned off)
-#'
+#' @name deregister
 #' @param name Name of data file.
 #' @param reg_type Data types to remove: raw, tidy, both.
 #'
 #' @importFrom dplyr filter
-#'
-#' @export
+
+
 deregister <- function(name, reg_type) {
   if (!is_registered(name, reg_type)) {
     warn_unregistered(name, reg_type)
