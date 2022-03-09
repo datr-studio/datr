@@ -183,3 +183,25 @@ get_filepath <- function(name, reg_type) {
   )
   filepath
 }
+
+
+
+#' Use tidy project tests
+#'
+#' `test()` runs a version of `testthat()` adapted for datr-style tidy projects.
+#'
+#' @export
+test <- function() {
+  test_path <- file.path(get_root(), "tests", "run-tests.R")
+  if (!file.exists(test_path)) {
+    cli::cli_alert_warning("Tests do not seem to be set up in this project.")
+    msg <- cli::format_inline("Continuing will set up tests in this project now.")
+    if (confirm_action(msg)) {
+      use_tests()
+    } else {
+      stop_quietly()
+    }
+  } else {
+    source(test_path)
+  }
+}
