@@ -41,15 +41,7 @@ devtools::install_github("datr-studio/datr")
 ```
 ## Getting Started
 
-A basic tidy datr structure includes the following folders:
-
---data
-----raw
-----tidy
---R
-DESCRIPTION
-
-It also must have a DESCRIPTION file, like an R package.
+A basic tidy datr structure includes a data folder and a DESCRIPTION file, like an R package.
 
 To create these, simply load `datr` as you would a normal package, and you will be guided through the prompts to set this up. 
 
