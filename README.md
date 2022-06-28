@@ -34,7 +34,7 @@ You can install the development version of datr from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("datr-studio/datr")
+devtools::install_github("firthj/datr")
 ```
 
 ## Getting Started
