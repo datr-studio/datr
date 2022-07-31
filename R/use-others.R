@@ -36,3 +36,10 @@ use_validation <- function(path = ".") {
 use_notebooks <- function(path = ".") {
   mkdir(file.path(path, "notebooks", "EDA"))
 }
+
+#' @export
+use_model <- function(path = ".") {
+  mkdir(file.path(path, "model", "core"))
+  mkdir(file.path(path, "model", "inputs"))
+  mkdir(file.path(path, "model", "output"))
+}

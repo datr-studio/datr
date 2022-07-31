@@ -194,17 +194,17 @@ deregister_raw <- function(name) deregister(name, "raw")
 #' @return A tibble.
 #'
 #' @export
-load_tidy <- function(name, ...) {
+load_tidy <- function(name, append_source = FALSE, ...) {
   if (!is_registered(name, "tidy")) abort_unregistered(name, "tidy")
-  load_file(name, "tidy")
+  load_file(name, "tidy", append_source, ...)
 }
 
 
 #' @export
 #' @rdname loaders
-load_raw <- function(name, ...) {
+load_raw <- function(name, append_source = FALSE, ...) {
   if (!is_registered(name, "raw")) abort_unregistered(name, "raw")
-  load_file(name, "raw", ...)
+  load_file(name, "raw", append_source, ...)
 }
 
 #' @export
@@ -224,7 +224,7 @@ load_raw_cells <- function(name, ...) {
 #' @importFrom tools file_ext
 #' @importFrom janitor clean_names
 #' @import cli
-load_file <- function(name, reg_type, ...) {
+load_file <- function(name, reg_type, append_source, ...) {
   file <- get_register(reg_type) %>%
     dplyr::filter(.data$name == .env$name)
   source_dir <- get_source_dir(name, reg_type)
@@ -238,7 +238,7 @@ load_file <- function(name, reg_type, ...) {
     df <- reader(filepath, ...)
     if (inherits(df, "data.frame")) {
       df <- janitor::clean_names(df)
-      df$source <- file$source
+      if (append_source) df$source <- file$source
     }
     cli::cli_alert_success("Loaded {.path {name}} (Source: {file$source}).")
     df
