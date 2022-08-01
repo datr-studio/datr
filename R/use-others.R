@@ -41,5 +41,5 @@ use_notebooks <- function(path = ".") {
 use_model <- function(path = ".") {
   mkdir(file.path(path, "model", "core"))
   mkdir(file.path(path, "model", "inputs"))
-  mkdir(file.path(path, "model", "output"))
+  mkdir(file.path(path, "model", "outputs"))
 }
