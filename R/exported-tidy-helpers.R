@@ -75,10 +75,10 @@ save_outputs <- function(data, name, subdir = NULL) {
 }
 
 
-#' Save data to model inputs
+#' Save data to model config
 #'
-#' `save_inputs()` utilizes the power of a tidy project structure to save a data.frame
-#'  to the model inputs folder.
+#' `save_config()` utilizes the power of a tidy project structure to save a data.frame
+#'  to the model congif folder.
 #'
 #' @param data A data.frame.
 #' @param filename Name to use for saved file. Must include a file extension that is
@@ -86,14 +86,14 @@ save_outputs <- function(data, name, subdir = NULL) {
 #' @param subdir An optional subdir.
 #'
 #' @export
-save_inputs <- function(data, filename, subdir = NULL) {
+save_config <- function(data, filename, subdir = NULL) {
   check_type(data, "data.frame|list")
   check_type(filename, "character")
   if (!is.null(subdir)) check_type(subdir, "character")
   ext <- tools::file_ext(filename)
   if (nchar(ext) == 0) abort_no_file_ext(filename)
   writer <- get_writer(ext)
-  paths <- c(get_root(), "model", "inputs", subdir)
+  paths <- c(get_root(), "model", "congif", subdir)
   base_path <- paste0(paths, collapse = .Platform$file.sep)
   mkdir(base_path)
   filepath <- file.path(base_path, filename)
@@ -101,10 +101,10 @@ save_inputs <- function(data, filename, subdir = NULL) {
   cli::cli_alert_success("File saved to {.path {relative_path(filepath)}}.")
 }
 
-#' Save text to model inputs
+#' Save text to model config
 #'
-#' `save_inputs_text()` utilizes the power of a tidy project structure to save a
-#'  character vector to the model inputs folder.
+#' `save_config_text()` utilizes the power of a tidy project structure to save a
+#'  character vector to the model config folder.
 #'
 #' @param text A character vector.
 #' @param filename Name to use for saved file. Must include a file extension that is
@@ -112,11 +112,11 @@ save_inputs <- function(data, filename, subdir = NULL) {
 #' @param subdir An optional subdir.
 #'
 #' @export
-save_inputs_text <- function(text, filename, subdir = NULL) {
+save_config_text <- function(text, filename, subdir = NULL) {
   check_type(text, "character")
   check_type(filename, "character")
   if (!is.null(subdir)) check_type(subdir, "character")
-  paths <- c(get_root(), "model", "inputs", subdir)
+  paths <- c(get_root(), "model", "config", subdir)
   base_path <- paste0(paths, collapse = .Platform$file.sep)
   mkdir(base_path)
   filepath <- file.path(base_path, name)
@@ -128,7 +128,7 @@ save_inputs_text <- function(text, filename, subdir = NULL) {
 
 #' Load model outputs
 #'
-#' `load_output()` and `load_inputs()` utilizes the power of a tidy project structure
+#' `load_output()` and `load_config()` utilizes the power of a tidy project structure
 #' to load a named file from the model folder.
 #'
 #' @name model_loaders
@@ -146,8 +146,8 @@ load_outputs <- function(name, subdir = NULL, ...) {
 
 #' @rdname model_loaders
 #' @export
-load_inputs <- function(name, subdir = NULL, ...) {
-  load_model_file("inputs", name, subdir, ...)
+load_config <- function(name, subdir = NULL, ...) {
+  load_model_file("config", name, subdir, ...)
 }
 
 load_model_file <- function(model_dir, name, subdir, ...) {
@@ -164,6 +164,9 @@ load_model_file <- function(model_dir, name, subdir, ...) {
   cli::cli_alert_success("Loaded {.path {name}} (Source: Model {model_dir}).")
   df
 }
+
+#' @export
+init_model <- function() source(file.path(get_root(), "model", "core", "init.R"))
 
 
 #' Get file path of tidy data
@@ -204,4 +207,24 @@ test <- function() {
   } else {
     source(test_path)
   }
+}
+
+is_over_100mb <- function(f) file.info(f)[["size"]] / 1e6 > 100
+
+add_to_gitignore <- function(f) {
+  con <- file(".gitignore")
+  gitignore <- readLines(con)
+  close(con)
+  if (is.na(match(f, gitignore))) {
+    updated <- append(gitignore, f)
+    con <- file(".gitignore")
+    writeLines(updated, con)
+    close(con)
+  }
+}
+
+#' @export
+excl_lg_files_from_git <- function() {
+  fs <- list.files("data", recursive = T, full.names = T)
+  purrr::walk(fs, ~ if (is_over_100mb(.x)) add_to_gitignore(.x))
 }

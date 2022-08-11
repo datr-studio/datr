@@ -4,15 +4,13 @@
 \alias{save_raw}
 \title{Save Raw Data}
 \usage{
-save_raw(filepath, version, source)
+save_raw(filepath, source, url = NA_character_)
 }
 \arguments{
 \item{filepath}{Path to file to add.}
 
-\item{version}{Data version (for reference)}
-
 \item{source}{Source name.}
 }
 \description{
-Registers raw data into datrstudio project and saves to file structure.
+Registers raw data into project and saves to file structure.
 }

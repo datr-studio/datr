@@ -5,29 +5,24 @@
 
 #' Save Raw Data
 #'
-#' Registers raw data into datrstudio project and saves to file structure.
+#' Registers raw data into project and saves to file structure.
 #'
 #' @param filepath Path to file to add.
-#' @param version Data version (for reference)
 #' @param source Source name.
 #'
 #' @importFrom tools file_ext
 #' @export
-save_raw <- function(filepath, version, source) {
+save_raw <- function(filepath, source, url = NA_character_) {
   check_type(filepath, "character")
   check_type(source, "character")
-
-  version <- as.character(version)
-  if (!length(version) == 1) abort_incorrect_version(version)
 
   check_exists(filepath)
   if (is_dir(filepath)) {
     warn_skipping_dir(filepath)
   } else {
     name <- standardise_filename(rem_ext(basename(filepath)))
-    name <- paste0(name, "-", standardise_filename(version))
     ext <- tools::file_ext(filepath)
-    append_to_register("raw", name, version, source, ext)
+    append_to_register("raw", name, source, ext, url)
     organise_file_tree("raw")
     move_to_raw(filepath, name, source)
     cli::cli_alert_success("{.val {name}} has been saved to raw data.")
@@ -36,44 +31,41 @@ save_raw <- function(filepath, version, source) {
 
 
 #' @export
-save_raw_folder <- function(folder, version, source) {
+save_raw_folder <- function(folder, source) {
   check_type(folder, "character")
   check_type(source, "character")
 
-  version <- as.character(version)
-  if (!length(version) == 1) abort_incorrect_version(version)
   if (!is_dir(folder)) abort_folder_not_found(folder)
   files <- list.files(folder, full.names = TRUE, recursive = TRUE)
-  purrr::walk(files, ~ save_raw(.x, version, source))
+  purrr::walk(files, ~ save_raw(.x, source))
 }
 
 #' Save Tidy
 #'
-#' Save a tidy copy of your data according to the datrstudio data management system.
+#' Save a tidy copy of your data according to the data management system.
 #'
 #' @param data A data.frame
 #' @param name Name of the data frame
-#' @param version Data version (for reference)
 #' @param source Name of the source for reference. Can be inferred from a column called `source` if there is one.
+#' @param ext Filetype. Defaults to feather.
+#' @param force If true, datr will replace existing data with the same name without prompting.
 #'
 #' @export
 #'
-save_tidy <- function(data, name, version, source = NULL, visible = FALSE) {
+save_tidy <- function(data, name, source = NULL, ext = "fe", force = FALSE) {
   # Arg checking
   check_type(data, "data.frame")
   check_type(name, "character")
-  version <- as.character(version)
-  if (!length(version) == 1) abort_incorrect_version(version)
+
   source <- source %||% check_source(data, name)
   name <- standardise_filename(name)
-  name <- paste0(name, "-", standardise_filename(version))
-  append_to_register("tidy", name, version, source, "fe")
+  append_to_register("tidy", name, source, ext, force = force)
   organise_file_tree("tidy")
   source_dir <- standardise_filename(source)
-  filepath <- file.path(get_root(), "data", "tidy", source_dir, paste0(name, ".fe"))
-  feather::write_feather(data, filepath)
+  filepath <- file.path(get_root(), "data", "tidy", source_dir, paste0(name, ".", ext))
+  writer <- get_writer(ext)
+  writer(data, filepath)
   cli::cli_alert_success("{.val {name}} saved to tidy data.")
-  if (visible) withVisible(data)$value else invisible(data)
 }
 
 check_source <- function(x, name) {
@@ -96,34 +88,50 @@ check_source <- function(x, name) {
 #'
 #' Removes the registered data with the same name and replaces it with the specified file.
 #'
-#' @param filepath Path to replacement file.
+#' @param data A data frame. Either this or a filename.
 #' @param name Name of data file to replace.
+#' @param filepath Path to replacement file (Must have either this or a dataframe).
 #'
 #' @export
-replace_raw <- function(filepath, name) {
-  if (!is_registered(name, "raw")) abort_unregistered(name, "raw")
-  metadata <- get_metadata(name, "raw")
-  deregister_raw(name)
-  name <- str_rem(name, paste0("-", metadata$version))
-  save_raw(filepath, metadata$version, metadata$source)
+update_raw <- function(data = NULL, name, filepath = NULL) {
+  update_data(name, data, filepath, "raw")
 }
-
 
 
 #' Replace a data frame in the tidy register.
 #'
-#' Removes the registered data with the same name and replaces it with the given data.
+#' UPdates the registered data with updated data
 #'
-#' @param data A data.frame.
+#' @param data A data frame.
 #' @param name Name of data file to replace.
 #'
 #' @export
-replace_tidy <- function(data, name) {
-  if (!is_registered(name, "tidy")) abort_unregistered(name, "tidy")
-  metadata <- get_metadata(name, "tidy")
-  deregister_tidy(name)
-  name <- str_rem(name, paste0("-", metadata$version))
-  save_tidy(data, name, metadata$version, metadata$source)
+update_tidy <- function(data, name) {
+  update_data(name, data, "tidy")
+}
+
+update_data <- function(name, data = NULL, filepath = NULL, type) {
+  if (!is_registered(name, type)) abort_unregistered(name, type)
+  if (is.null(filepath) && is.null(data)) abort_no_data()
+  metadata <- get_metadata(name, type)
+  if (!is.null(filepath)) {
+    check_exists(filepath)
+    if (is_dir(filepath)) {
+      warn_skipping_dir(filepath)
+    } else {
+      move_to_raw(filepath, name, metadata$source)
+    }
+  } else if (!is.null(data)) {
+    check_type(data, "data.frame")
+    ext <- metadata$ext
+    writer <- get_writer(ext)
+    filename <- file.path(
+      get_root(), "data", "raw", metadata$source, paste0(name, ".", metadata$ext)
+    )
+    writer(data, filename)
+  }
+
+  cli::cli_alert_success("{.val {name}} has been updated.")
 }
 
 
@@ -131,15 +139,41 @@ replace_tidy <- function(data, name) {
 
 # Append to register ---------------------------------------------------------------
 #' @import tibble
-append_to_register <- function(reg_type, name, version, source, ext) {
+append_to_register <- function(reg_type, name, source, ext, url = NA_character_, force = FALSE) {
   reg <- get_register(reg_type)
-  if (name %in% reg$name) abort_non_unique_name(name, reg_type)
-  reg %>%
-    tibble::add_row(name = name, version = version, source = source, ext = ext) %>%
-    update_register(reg_type)
+  if (name %in% reg$name) {
+    if (!force) {
+      abort_non_unique_name(name, reg_type)
+    } else {
+      # Check that the sources match. If not, this is accidental.
+      current_source <- reg %>%
+        dplyr::filter(.data$name == .env$name) %>%
+        dplyr::pull(source)
+      if (current_source != source) {
+        abort_non_unique_name_diff_sources(name, reg_type, current_source, source)
+      }
+      current_ext <- reg %>%
+        dplyr::filter(.data$name == .env$name) %>%
+        dplyr::pull(ext)
+      if (current_ext != ext) {
+        change_tidy_ext(name, ext)
+        remove_old_version("tidy", name, source, current_ext)
+      }
+    }
+  } else {
+    if (reg_type == "raw") {
+      reg %>%
+        tibble::add_row(name = name, source = source, ext = ext, url = url) %>%
+        update_register(reg_type)
+    } else {
+      reg %>%
+        tibble::add_row(name = name, source = source, ext = ext) %>%
+        update_register(reg_type)
+    }
+  }
 }
 
-#' Deregister data from data registry
+#' remove data from data registry
 #'
 #' This function will delete the named file from the data register, and will
 #' remove the file from disk as well (unless this is turned off)
@@ -150,7 +184,7 @@ append_to_register <- function(reg_type, name, version, source, ext) {
 #' @importFrom dplyr filter
 
 
-deregister <- function(name, reg_type) {
+remove_data <- function(name, reg_type) {
   if (!is_registered(name, reg_type)) {
     warn_unregistered(name, reg_type)
   } else {
@@ -165,11 +199,21 @@ deregister <- function(name, reg_type) {
 
 #' @rdname deregister
 #' @export
-deregister_tidy <- function(name) deregister(name, "tidy")
+remove_tidy <- function(name) remove_data(name, "tidy")
 
 #' @rdname deregister
 #' @export
-deregister_raw <- function(name) deregister(name, "raw")
+remove_raw <- function(name) remove_data(name, "raw")
+
+change_tidy_ext <- function(data_name, new_ext) {
+  get_register("tidy") %>%
+    mutate(ext = ifelse(name == data_name, new_ext, ext)) %>%
+    update_register("tidy")
+}
+
+remove_old_version <- function(reg_type, name, source, ext) {
+  unlink(file.path(get_root(), "data", reg_type, source, paste0(name, ".", ext)))
+}
 
 # Loaders ---------------------------------------------------------------
 #'
@@ -196,15 +240,15 @@ deregister_raw <- function(name) deregister(name, "raw")
 #' @export
 load_tidy <- function(name, append_source = FALSE, ...) {
   if (!is_registered(name, "tidy")) abort_unregistered(name, "tidy")
-  load_file(name, "tidy", append_source, ...)
+  load_file(name, "tidy", append_source, clean_names = T, ...)
 }
 
 
 #' @export
 #' @rdname loaders
-load_raw <- function(name, append_source = FALSE, ...) {
+load_raw <- function(name, append_source = FALSE, clean_names = TRUE, ...) {
   if (!is_registered(name, "raw")) abort_unregistered(name, "raw")
-  load_file(name, "raw", append_source, ...)
+  load_file(name, "raw", append_source, clean_names, ...)
 }
 
 #' @export
@@ -224,7 +268,7 @@ load_raw_cells <- function(name, ...) {
 #' @importFrom tools file_ext
 #' @importFrom janitor clean_names
 #' @import cli
-load_file <- function(name, reg_type, append_source, ...) {
+load_file <- function(name, reg_type, append_source, clean_names, ...) {
   file <- get_register(reg_type) %>%
     dplyr::filter(.data$name == .env$name)
   source_dir <- get_source_dir(name, reg_type)
@@ -232,12 +276,12 @@ load_file <- function(name, reg_type, append_source, ...) {
     get_root(), "data", reg_type, source_dir, paste0(name, ".", file$ext)
   )
   if (file$ext %in% .state$external_file_types) {
-    open_external_file(filepath, file.ext)
+    open_external_file(filepath)
   } else {
     reader <- get_reader(file$ext)
     df <- reader(filepath, ...)
     if (inherits(df, "data.frame")) {
-      df <- janitor::clean_names(df)
+      if (clean_names) df <- janitor::clean_names(df)
       if (append_source) df$source <- file$source
     }
     cli::cli_alert_success("Loaded {.path {name}} (Source: {file$source}).")
@@ -250,6 +294,7 @@ load_file <- function(name, reg_type, append_source, ...) {
 #' @importFrom readxl read_excel
 #' @importFrom vroom vroom
 #' @importFrom yaml read_yaml
+#' @importFrom rvest read_html
 get_reader <- function(ext) {
   switch(ext,
     "fe" = function(f, ...) feather::read_feather(f, ...),
@@ -261,6 +306,7 @@ get_reader <- function(ext) {
     "xlsm" = function(f, ...) readxl::read_excel(f, ...),
     "yaml" = , # nolint
     "yml" = function(f, ...) yaml::read_yaml(f, ...),
+    "html" = function(f, ...) rvest::read_html(f, ...),
     stop(abort_unsupported_file(ext))
   )
 }
@@ -334,9 +380,6 @@ process_data_rename <- function(reg_type, from, to) {
   if (!is_registered(from, reg_type)) abort_unregistered(from, reg_type)
   original_meta <- get_metadata(from, reg_type)
   source <- standardise_filename(original_meta$source)
-  version <- standardise_filename(original_meta$version)
-  to <- standardise_filename(str_rem(to, version))
-  to <- paste0(to, "-", version)
   reg <- get_register(reg_type)
   reg$name <- ifelse(reg$name == from, to, reg$name)
   update_register(reg, reg_type)
@@ -346,7 +389,30 @@ process_data_rename <- function(reg_type, from, to) {
   new_filename <- file.path(file.path(get_root(), "data", reg_type, source, to))
   file.copy(old_filename, new_filename)
   unlink(old_filename)
-  cli::cli_alert_success("{original_name} has been renamed to {.val {to}}.")
+  cli::cli_alert_success("{from} has been renamed to {.val {to}}.")
+}
+
+# Open files externally ---------------------------------------------------------------
+#'
+#' @export
+open_raw <- function(name) {
+  open_data_with_system(name, "raw")
+}
+
+#' @export
+open_config <- function(name) {
+  path <- file.path(get_root(), "model", "config", name)
+  if (!file.exists(path)) abort_file_not_found(path)
+  open_external_file(path)
+}
+
+open_data_with_system <- function(name, reg_type) {
+  if (!is_registered(name, reg_type)) abort_unregistered(name, reg_type)
+  meta <- get_metadata(name, reg_type)
+  path <- file.path(
+    get_root(), "data", reg_type, meta$source, paste0(name, ".", meta$ext)
+  )
+  open_external_file(path)
 }
 
 
@@ -423,7 +489,7 @@ get_metadata <- function(name, reg_type) {
 
 
 
-open_external_file <- function(path, ext) {
+open_external_file <- function(path) {
   if (Sys.info()["sysname"] == "Windows") {
     stop("Opening external files is not yet implemented on Windows.")
   } else {

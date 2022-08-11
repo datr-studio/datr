@@ -2,15 +2,16 @@
 % Please edit documentation in R/organise-data.R
 \name{deregister}
 \alias{deregister}
-\alias{deregister_tidy}
-\alias{deregister_raw}
-\title{Deregister data from data registry}
+\alias{remove_data}
+\alias{remove_tidy}
+\alias{remove_raw}
+\title{remove data from data registry}
 \usage{
-deregister(name, reg_type)
+remove_data(name, reg_type)
 
-deregister_tidy(name)
+remove_tidy(name)
 
-deregister_raw(name)
+remove_raw(name)
 }
 \arguments{
 \item{name}{Name of data file.}

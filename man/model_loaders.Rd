@@ -3,12 +3,12 @@
 \name{model_loaders}
 \alias{model_loaders}
 \alias{load_outputs}
-\alias{load_inputs}
+\alias{load_config}
 \title{Load model outputs}
 \usage{
 load_outputs(name, subdir = NULL, ...)
 
-load_inputs(name, subdir = NULL, ...)
+load_config(name, subdir = NULL, ...)
 }
 \arguments{
 \item{name}{Name of file to load.}
@@ -18,6 +18,6 @@ load_inputs(name, subdir = NULL, ...)
 \item{...}{Arguments to pass on to the appropriate file reader.}
 }
 \description{
-\code{load_output()} and \code{load_inputs()} utilizes the power of a tidy project structure
+\code{load_output()} and \code{load_config()} utilizes the power of a tidy project structure
 to load a named file from the model folder.
 }

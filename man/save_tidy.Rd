@@ -4,17 +4,19 @@
 \alias{save_tidy}
 \title{Save Tidy}
 \usage{
-save_tidy(data, name, version, source = NULL, visible = FALSE)
+save_tidy(data, name, source = NULL, ext = "fe", force = FALSE)
 }
 \arguments{
 \item{data}{A data.frame}
 
 \item{name}{Name of the data frame}
 
-\item{version}{Data version (for reference)}
-
 \item{source}{Name of the source for reference. Can be inferred from a column called \code{source} if there is one.}
+
+\item{ext}{Filetype. Defaults to feather.}
+
+\item{force}{If true, datr will replace existing data with the same name without prompting.}
 }
 \description{
-Save a tidy copy of your data according to the datrstudio data management system.
+Save a tidy copy of your data according to the data management system.
 }

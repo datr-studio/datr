@@ -14,3 +14,7 @@ get_root <- function() {
 
 
 set_root <- function() setwd(get_root())
+
+
+#' @export
+from_dls <- function(f) paste0("~/Downloads/", f)

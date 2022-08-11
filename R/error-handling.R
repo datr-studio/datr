@@ -4,6 +4,14 @@
 #' @import cli
 abort_non_unique_name <- function(name, reg_type) {
   cli::cli_alert_danger("Error: {.val {name}} already exists in the {reg_type} data register.")
+  cli::cli_text(cli::col_grey("Use {.code force = TRUE} if you want to overwrite it."))
+  stop_quietly()
+}
+
+abort_non_unique_name_diff_sources <- function(name, reg_type, current_source, new_source) {
+  cli::cli_alert_danger("Error: {.val {name}} already exists in the {reg_type} data register.")
+  cli::cli_text(cli::col_grey("The version that exists has the source: {current_source}"))
+  cli::cli_text(cli::col_grey("The version you're trying to save has the source: {new_source}"))
   stop_quietly()
 }
 
@@ -69,6 +77,11 @@ abort_no_such_source <- function(name, reg_type) {
 
 abort_no_file_ext <- function(name) {
   cli::cli_alert_danger("Error: No valid file extension was found in {.val {name}}.")
+  stop_quietly()
+}
+
+abort_no_data <- function(name) {
+  cli::cli_alert_danger("Error: The update function requires either a dataframe or a filepath to one.")
   stop_quietly()
 }
 

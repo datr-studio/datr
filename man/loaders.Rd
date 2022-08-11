@@ -7,9 +7,9 @@
 \alias{load_raw_cells}
 \title{Load Tidy/Raw get your data smartly}
 \usage{
-load_tidy(name, ...)
+load_tidy(name, append_source = FALSE, ...)
 
-load_raw(name, ...)
+load_raw(name, append_source = FALSE, clean_names = TRUE, ...)
 
 load_raw_cells(name, ...)
 }

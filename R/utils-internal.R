@@ -65,6 +65,7 @@ write_file <- function(content, path, open = TRUE) {
   if (open) open_file(path)
 }
 
+
 rename_dir <- function(from, to) {
   if (dir.exists(from)) {
     if (!dir.exists(to)) dir.create(to)

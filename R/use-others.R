@@ -11,15 +11,14 @@ use_tidy_data <- function(path = ".") {
   mkdir(file.path(path, "data", "tidy"))
   reg <- tibble::tibble(
     name = character(),
-    version = character(),
     source = character(),
     ext = character()
   )
-  feather::write_feather(
-    reg, file.path(path, "data", ".raw.fe")
+  readr::write_csv(
+    reg, file.path(path, "data", ".raw.csv")
   )
-  feather::write_feather(
-    reg, file.path(path, "data", ".tidy.fe")
+  readr::write_csv(
+    reg, file.path(path, "data", ".tidy.csv")
   )
 }
 
@@ -40,6 +39,6 @@ use_notebooks <- function(path = ".") {
 #' @export
 use_model <- function(path = ".") {
   mkdir(file.path(path, "model", "core"))
-  mkdir(file.path(path, "model", "inputs"))
+  mkdir(file.path(path, "model", "config"))
   mkdir(file.path(path, "model", "outputs"))
 }
