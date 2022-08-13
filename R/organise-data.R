@@ -240,7 +240,7 @@ remove_old_version <- function(reg_type, name, source, ext) {
 #' @export
 load_tidy <- function(name, append_source = FALSE, ...) {
   if (!is_registered(name, "tidy")) abort_unregistered(name, "tidy")
-  load_file(name, "tidy", append_source, clean_names = T, ...)
+  load_file(name, "tidy", append_source, ...)
 }
 
 
@@ -248,7 +248,7 @@ load_tidy <- function(name, append_source = FALSE, ...) {
 #' @rdname loaders
 load_raw <- function(name, append_source = FALSE, ...) {
   if (!is_registered(name, "raw")) abort_unregistered(name, "raw")
-  load_file(name, "raw", append_source, clean_names, ...)
+  load_file(name, "raw", append_source, ...)
 }
 
 #' @export
@@ -267,7 +267,7 @@ load_raw_cells <- function(name, ...) {
 
 #' @importFrom tools file_ext
 #' @import cli
-load_file <- function(name, reg_type, append_source,  ...) {
+load_file <- function(name, reg_type, append_source, ...) {
   file <- get_register(reg_type) %>%
     dplyr::filter(.data$name == .env$name)
   source_dir <- get_source_dir(name, reg_type)
