@@ -17,4 +17,10 @@ set_root <- function() setwd(get_root())
 
 
 #' @export
-from_dls <- function(f) paste0("~/Downloads/", f)
+from_dls <- function(f) {
+  if (!Sys.info()[["sysname"]] == "Windows") {
+    paste0("~/Downloads/", f)
+  } else {
+    file.path("C:/Users", Sys.info()[["user"]], "Downloads",f)
+  }
+}
