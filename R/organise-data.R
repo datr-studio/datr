@@ -246,7 +246,7 @@ load_tidy <- function(name, append_source = FALSE, ...) {
 
 #' @export
 #' @rdname loaders
-load_raw <- function(name, append_source = FALSE, clean_names = TRUE, ...) {
+load_raw <- function(name, append_source = FALSE, ...) {
   if (!is_registered(name, "raw")) abort_unregistered(name, "raw")
   load_file(name, "raw", append_source, clean_names, ...)
 }
@@ -266,9 +266,8 @@ load_raw_cells <- function(name, ...) {
 }
 
 #' @importFrom tools file_ext
-#' @importFrom janitor clean_names
 #' @import cli
-load_file <- function(name, reg_type, append_source, clean_names, ...) {
+load_file <- function(name, reg_type, append_source,  ...) {
   file <- get_register(reg_type) %>%
     dplyr::filter(.data$name == .env$name)
   source_dir <- get_source_dir(name, reg_type)
@@ -281,7 +280,6 @@ load_file <- function(name, reg_type, append_source, clean_names, ...) {
     reader <- get_reader(file$ext)
     df <- reader(filepath, ...)
     if (inherits(df, "data.frame")) {
-      if (clean_names) df <- janitor::clean_names(df)
       if (append_source) df$source <- file$source
     }
     cli::cli_alert_success("Loaded {.path {name}} (Source: {file$source}).")

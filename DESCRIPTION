@@ -35,4 +35,5 @@ Imports:
     janitor,
     yaml,
     glue,
-    rvest
+    rvest,
+    readr

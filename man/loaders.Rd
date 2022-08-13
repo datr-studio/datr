@@ -9,7 +9,7 @@
 \usage{
 load_tidy(name, append_source = FALSE, ...)
 
-load_raw(name, append_source = FALSE, clean_names = TRUE, ...)
+load_raw(name, append_source = FALSE, ...)
 
 load_raw_cells(name, ...)
 }

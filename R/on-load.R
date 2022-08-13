@@ -20,6 +20,7 @@ has_desc <- function() {
   !is.null(get_root())
 }
 
+#' @importFrom readr read_csv write_csv
 has_tidy_data <- function() {
   root <- get_root()
   has_raw_reg_as_fe <- file.exists(file.path(root, "data", ".raw.fe"))
