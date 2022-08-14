@@ -296,7 +296,7 @@ load_file <- function(name, reg_type, append_source, ...) {
 get_reader <- function(ext) {
   switch(ext,
     "fe" = function(f, ...) feather::read_feather(f, ...),
-    "csv" = function(f, ...) readr::read_csv(f, show_col_types = FALSE, ...),
+    "csv" = function(f, ...) vroom::vroom(f, show_col_types = FALSE, ...),
     "dat" = , # nolint,
     "tsv" = function(f, ...) vroom::vroom(f, show_col_types = FALSE, ...),
     "xls" = , # nolint

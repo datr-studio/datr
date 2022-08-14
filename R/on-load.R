@@ -20,7 +20,6 @@ has_desc <- function() {
   !is.null(get_root())
 }
 
-#' @importFrom readr read_csv write_csv
 has_tidy_data <- function() {
   root <- get_root()
   has_raw_reg_as_fe <- file.exists(file.path(root, "data", ".raw.fe"))
@@ -29,19 +28,19 @@ has_tidy_data <- function() {
   if (has_raw_reg_as_fe && has_tidy_reg_as_fe) {
     original <- feather::read_feather(file.path(root, "data", ".raw.fe"))
     original$version <- NULL
-    readr::write_csv(original, file.path(root, "data", ".raw.csv"))
+    vroom::vroom_write(original, file.path(root, "data", ".raw.csv"), delim = ",")
     original <- feather::read_feather(file.path(root, "data", ".tidy.fe"))
     original$version <- NULL
-    readr::write_csv(original, file.path(root, "data", ".tidy.csv"))
+    vroom::vroom_write(original, file.path(root, "data", ".tidy.csv"), delim = ",")
     unlink(file.path(root, "data", ".raw.fe"))
     unlink(file.path(root, "data", ".tidy.fe"))
   }
   has_raw_reg <- file.exists(file.path(root, "data", ".raw.csv"))
   if (has_raw_reg) {
     f <- file.path(root, "data", ".raw.csv")
-    data <- readr::read_csv(f, show_col_types = F)
+    data <- vroom::vroom(f, show_col_types = F)
     if (!"url" %in% colnames(data)) data$url <- NA_character_
-    readr::write_csv(data, f)
+    vroom::vroom_write(data, f, delim = ",")
   }
   has_tidy_reg <- file.exists(file.path(root, "data", ".tidy.csv"))
   has_raw_reg && has_tidy_reg
@@ -50,7 +49,7 @@ has_tidy_data <- function() {
 load_register <- function(reg_type) {
   reg <- paste0(".", reg_type, ".csv")
   filename <- file.path(get_root(), "data", reg)
-  readr::read_csv(filename, show_col_types = F)
+  vroom::vroom(filename, show_col_types = F)
 }
 
 get_register <- function(reg_type) {
@@ -69,5 +68,5 @@ update_register <- function(data, reg_type) {
 save_register <- function(data, reg_type) {
   reg <- paste0(".", reg_type, ".csv")
   filename <- file.path(get_root(), "data", reg)
-  readr::write_csv(data, filename)
+  vroom::vroom_write(data, filename, delim = ",")
 }

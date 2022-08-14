@@ -14,11 +14,13 @@ use_tidy_data <- function(path = ".") {
     source = character(),
     ext = character()
   )
-  readr::write_csv(
-    reg, file.path(path, "data", ".raw.csv")
+  vroom::vroom_write(
+    reg, file.path(path, "data", ".raw.csv"),
+    delim = ","
   )
-  readr::write_csv(
-    reg, file.path(path, "data", ".tidy.csv")
+  vroom::vroom_write(
+    reg, file.path(path, "data", ".tidy.csv"),
+    delim = ","
   )
 }
 
