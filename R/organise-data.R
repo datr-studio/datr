@@ -12,7 +12,7 @@
 #'
 #' @importFrom tools file_ext
 #' @export
-save_raw <- function(filepath, source, url = NA_character_) {
+save_raw <- function(filepath, source, url = NA_character_, force = FALSE) {
   check_type(filepath, "character")
   check_type(source, "character")
 
@@ -22,7 +22,7 @@ save_raw <- function(filepath, source, url = NA_character_) {
   } else {
     name <- standardise_filename(rem_ext(basename(filepath)))
     ext <- tools::file_ext(filepath)
-    append_to_register("raw", name, source, ext, url)
+    append_to_register("raw", name, source, ext, url, force = force)
     organise_file_tree("raw")
     move_to_raw(filepath, name, source)
     cli::cli_alert_success("{.val {name}} has been saved to raw data.")
@@ -31,7 +31,7 @@ save_raw <- function(filepath, source, url = NA_character_) {
 
 
 #' @export
-save_raw_folder <- function(folder, source) {
+save_raw_folder <- function(folder, source, force = FALSE) {
   check_type(folder, "character")
   check_type(source, "character")
 
@@ -417,6 +417,7 @@ open_data_with_system <- function(name, reg_type) {
 
 # Path helpers ---------------------------------------------------------------
 #'
+#' @export
 standardise_filename <- function(x) {
   str_repl(x, " ", "-") %>%
     str_repl("_", "-") %>%

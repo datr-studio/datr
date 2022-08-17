@@ -7,6 +7,9 @@
 .state$raw <- NULL
 .state$tidy <- NULL
 .state$external_file_types <- c("doc", "docx", "pdf")
+.state$root <- NULL
+.state$rmd_dir <- NULL
+.state$fig_dir <- NULL
 
 .onLoad <- function(libname, pkgname) { # nolint
   if (!has_desc()) warn_no_desc()

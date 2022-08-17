@@ -1,15 +1,19 @@
 #' @export
 get_root <- function() {
-  old <- getwd()
-  on.exit(setwd(old))
-  for (attempt in 1:4) {
-    if (file.exists("DESCRIPTION")) {
-      return(getwd())
-    } else {
-      setwd("..")
+  if (is.null(.state$root)) {
+    old <- getwd()
+    on.exit(setwd(old))
+    for (attempt in 1:4) {
+      if (file.exists("DESCRIPTION")) {
+        .state$root <- getwd()
+        return(getwd())
+      } else {
+        setwd("..")
+      }
     }
+  } else {
+    .state$root
   }
-  invisible(NULL)
 }
 
 
@@ -21,6 +25,6 @@ from_dls <- function(f) {
   if (!Sys.info()[["sysname"]] == "Windows") {
     paste0("~/Downloads/", f)
   } else {
-    file.path("C:/Users", Sys.info()[["user"]], "Downloads",f)
+    file.path("C:/Users", Sys.info()[["user"]], "Downloads", f)
   }
 }

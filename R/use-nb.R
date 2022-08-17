@@ -1,6 +1,6 @@
 #' @export
 use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
-                   use_func = TRUE, validation = FALSE, export = FALSE) {
+                   doc = FALSE, export = FALSE, use_func) {
   #  check args
   check_type(title, "character")
   check_type(subdir, "character")
@@ -14,11 +14,6 @@ use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
     mkdir(path)
     subdir <- ifelse(subdir == "EDA", "", subdir)
     rmd_setup_params <- "export = TRUE"
-  } else if (validation) {
-    path <- file.path(root, "validation", "analysis")
-    if (!dir.exists(path)) use_validation(root)
-    subdir <- ifelse(subdir == "EDA", "", subdir)
-    rmd_setup_params <- "validation = TRUE"
   } else {
     path <- file.path(root, "notebooks")
     if (!dir.exists(path)) use_notebooks(root)
@@ -29,9 +24,12 @@ use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
 
   # Build subdir context
   if (use_func) mkdir(file.path(path, "functions"))
+  mkdir(file.path(path, "figures"))
   if (pdf) {
     mkdir(file.path(path, "pdf"))
-  } else {
+  } else if (doc) {
+    mkdir(file.path(path, "docx"))
+  }else {
     mkdir(file.path(path, "html"))
   }
 
@@ -41,7 +39,9 @@ use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
   if (pdf) {
     nb <- get_template("rmd-pdf-start.Rmd")
     rmd_setup_params <- paste0(rmd_setup_params, ", pdf = TRUE")
-  } else {
+  } else if (doc) {
+    nb <- get_template("rmd-word-start.Rmd")
+  }else {
     nb <- get_template("rmd-html-start.Rmd")
   }
   nb <- nb %>%

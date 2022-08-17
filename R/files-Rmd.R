@@ -9,7 +9,7 @@
 #' @import glue
 #' @export
 rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
-                      png = FALSE, pdf = FALSE) {
+                      figdir = "figures", png = TRUE, pdf = FALSE) {
 
   # Rmd should always be in the folder "notebooks" under the main project folder, but can include a subdir
   root_dir <- get_root()
@@ -21,6 +21,12 @@ rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
     folder <- "notebooks"
   }
   working_dir <- file.path(root_dir, folder, subdir)
+
+  .state$rmd_dir <- working_dir
+  .state$fig_dir <- ifelse(figdir == "figures",
+    file.path(working_dir, "figures"),
+    file.path(working_dir, figdir)
+  )
 
   if (getwd() != working_dir) {
     if (interactive()) cli::cli_alert_info("Notebook path was changed to {.path {working_dir}}")
