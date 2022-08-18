@@ -23,10 +23,8 @@ rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
   working_dir <- file.path(root_dir, folder, subdir)
 
   .state$rmd_dir <- working_dir
-  .state$fig_dir <- ifelse(figdir == "figures",
-    file.path(working_dir, "figures"),
-    file.path(working_dir, figdir)
-  )
+
+  options(fig_path = file.path(working_dir, figdir))
 
   if (getwd() != working_dir) {
     if (interactive()) cli::cli_alert_info("Notebook path was changed to {.path {working_dir}}")
