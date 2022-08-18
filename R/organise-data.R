@@ -15,7 +15,9 @@
 save_raw <- function(filepath, source, url = NA_character_, force = FALSE) {
   check_type(filepath, "character")
   check_type(source, "character")
-
+  if (!file.exists(filepath)) {
+    if (file.exists(from_dls(filepath))) filepath = from_dls(filepath)
+  }
   check_exists(filepath)
   if (is_dir(filepath)) {
     warn_skipping_dir(filepath)

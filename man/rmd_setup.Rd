@@ -8,7 +8,8 @@ rmd_setup(
   subdir = "",
   export = FALSE,
   validation = FALSE,
-  png = FALSE,
+  figdir = "figures",
+  png = TRUE,
   pdf = FALSE
 )
 }
