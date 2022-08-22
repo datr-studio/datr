@@ -1,6 +1,6 @@
 #' @export
 use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
-                   doc = FALSE, export = FALSE, use_func) {
+                   doc = FALSE, export = FALSE, use_func = TRUE) {
   #  check args
   check_type(title, "character")
   check_type(subdir, "character")
@@ -29,7 +29,7 @@ use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
     mkdir(file.path(path, "pdf"))
   } else if (doc) {
     mkdir(file.path(path, "docx"))
-  }else {
+  } else {
     mkdir(file.path(path, "html"))
   }
 
@@ -41,8 +41,11 @@ use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
     rmd_setup_params <- paste0(rmd_setup_params, ", pdf = TRUE")
   } else if (doc) {
     nb <- get_template("rmd-word-start.Rmd")
-  }else {
-    nb <- get_template("rmd-html-start.Rmd")
+  } else {
+    css <- "    css: \"~/Projects/PROJECT_NAME/config/nb.css\"" %>%
+      str_repl("PROJECT_NAME", basename(root))
+    nb <- get_template("rmd-html-start.Rmd") %>%
+      replace_line(9, css)
   }
   nb <- nb %>%
     replace_line(2, paste0("title: ", title)) %>%

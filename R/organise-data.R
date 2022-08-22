@@ -15,8 +15,16 @@
 save_raw <- function(filepath, source, url = NA_character_, force = FALSE) {
   check_type(filepath, "character")
   check_type(source, "character")
+
+  if (file_has_no_ext(filepath)) {
+    basename <- basename(filepath)
+    dir <- str_rem(filepath, basename)
+    if (dir == "") dir = "~/Downloads"
+    filepath <- guess_full_filename(filepath, dir)
+  }
+
   if (!file.exists(filepath)) {
-    if (file.exists(from_dls(filepath))) filepath = from_dls(filepath)
+    if (file.exists(from_dls(filepath))) filepath <- from_dls(filepath)
   }
   check_exists(filepath)
   if (is_dir(filepath)) {
@@ -401,7 +409,9 @@ open_raw <- function(name) {
 
 #' @export
 open_config <- function(name) {
-  path <- file.path(get_root(), "model", "config", name)
+  dir = file.path(get_root(), "model", "config")
+  if (file_has_no_ext(name)) name = guess_full_filename(name, dir)
+  path <- file.path(dir, name)
   if (!file.exists(path)) abort_file_not_found(path)
   open_external_file(path)
 }

@@ -15,6 +15,12 @@ abort_non_unique_name_diff_sources <- function(name, reg_type, current_source, n
   stop_quietly()
 }
 
+abort_non_unique_filename = function(name, dir) {
+    cli::cli_alert_danger("Error: Can't guess file extension for {.val {name}} ")
+  cli::cli_text(cli::col_grey("There are multiple names in {.path {dir}} matching this name."))
+  stop_quietly()
+}
+
 abort_unregistered <- function(name, reg_type) {
   cli::cli_alert_danger("Error: {.val {name}} is not registered in the {reg_type} data register.")
   stop_quietly()

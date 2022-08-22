@@ -44,7 +44,7 @@ rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
   if (png) {
     device <- "png_output"
     ext <- "png"
-    out_width <- "90%"
+    out_width <- "75%"
     assign("png_output", png_output, envir = globalenv())
   } else if (pdf) {
     device <- "tikz"
