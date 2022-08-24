@@ -117,7 +117,7 @@ update_raw <- function(data = NULL, name, filepath = NULL) {
 #'
 #' @export
 update_tidy <- function(data, name) {
-  update_data(name, data, "tidy")
+  update_data(name, data = data, type= "tidy")
 }
 
 update_data <- function(name, data = NULL, filepath = NULL, type) {
@@ -136,7 +136,7 @@ update_data <- function(name, data = NULL, filepath = NULL, type) {
     ext <- metadata$ext
     writer <- get_writer(ext)
     filename <- file.path(
-      get_root(), "data", "raw", metadata$source, paste0(name, ".", metadata$ext)
+      get_root(), "data",type, metadata$source, paste0(name, ".", metadata$ext)
     )
     writer(data, filename)
   }
