@@ -65,8 +65,8 @@ rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
     fig.align = "center",
     dev = device,
     fig.ext = ext,
-    fig.width = 10,
-    fig.height = 10 / 1.618
+    fig.width = 8,
+    fig.height = 6
   )
 
   if (interactive()) {

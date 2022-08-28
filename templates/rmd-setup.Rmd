@@ -3,6 +3,7 @@
 library(datr)
 library(tidyverse)
 library(glue)
+library(easywritr)
 rmd_setup("")
 ```
 
