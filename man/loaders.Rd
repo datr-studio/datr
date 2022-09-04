@@ -2,16 +2,16 @@
 % Please edit documentation in R/organise-data.R
 \name{loaders}
 \alias{loaders}
-\alias{load_tidy}
-\alias{load_raw}
-\alias{load_raw_cells}
+\alias{read_tidy}
+\alias{read_raw}
+\alias{read_raw_cells}
 \title{Load Tidy/Raw get your data smartly}
 \usage{
-load_tidy(name, append_source = FALSE, ...)
+read_tidy(name, append_source = FALSE, ...)
 
-load_raw(name, append_source = FALSE, ...)
+read_raw(name, append_source = FALSE, ...)
 
-load_raw_cells(name, ...)
+read_raw_cells(name, ...)
 }
 \arguments{
 \item{name}{Name of filename to extract. File extensions are unnecessary and

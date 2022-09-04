@@ -24,26 +24,7 @@ has_desc <- function() {
 
 has_tidy_data <- function() {
   root <- get_root()
-  has_raw_reg_as_fe <- file.exists(file.path(root, "data", ".raw.fe"))
-  has_tidy_reg_as_fe <- file.exists(file.path(root, "data", ".tidy.fe"))
-  # Interim automatic update
-  if (has_raw_reg_as_fe && has_tidy_reg_as_fe) {
-    original <- feather::read_feather(file.path(root, "data", ".raw.fe"))
-    original$version <- NULL
-    vroom::vroom_write(original, file.path(root, "data", ".raw.csv"), delim = ",")
-    original <- feather::read_feather(file.path(root, "data", ".tidy.fe"))
-    original$version <- NULL
-    vroom::vroom_write(original, file.path(root, "data", ".tidy.csv"), delim = ",")
-    unlink(file.path(root, "data", ".raw.fe"))
-    unlink(file.path(root, "data", ".tidy.fe"))
-  }
   has_raw_reg <- file.exists(file.path(root, "data", ".raw.csv"))
-  if (has_raw_reg) {
-    f <- file.path(root, "data", ".raw.csv")
-    data <- vroom::vroom(f, show_col_types = F)
-    if (!"url" %in% colnames(data)) data$url <- NA_character_
-    vroom::vroom_write(data, f, delim = ",")
-  }
   has_tidy_reg <- file.exists(file.path(root, "data", ".tidy.csv"))
   has_raw_reg && has_tidy_reg
 }

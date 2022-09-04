@@ -19,7 +19,7 @@ save_raw <- function(filepath, source, url = NA_character_, force = FALSE) {
   if (file_has_no_ext(filepath)) {
     basename <- basename(filepath)
     dir <- str_rem(filepath, basename)
-    if (dir == "") dir = "~/Downloads"
+    if (dir == "") dir <- "~/Downloads"
     filepath <- guess_full_filename(filepath, dir)
   }
 
@@ -117,7 +117,7 @@ update_raw <- function(data = NULL, name, filepath = NULL) {
 #'
 #' @export
 update_tidy <- function(data, name) {
-  update_data(name, data = data, type= "tidy")
+  update_data(name, data = data, type = "tidy")
 }
 
 update_data <- function(name, data = NULL, filepath = NULL, type) {
@@ -136,7 +136,7 @@ update_data <- function(name, data = NULL, filepath = NULL, type) {
     ext <- metadata$ext
     writer <- get_writer(ext)
     filename <- file.path(
-      get_root(), "data",type, metadata$source, paste0(name, ".", metadata$ext)
+      get_root(), "data", type, metadata$source, paste0(name, ".", metadata$ext)
     )
     writer(data, filename)
   }
@@ -237,7 +237,7 @@ remove_old_version <- function(reg_type, name, source, ext) {
 #' data management system. If not, do that first. They can handle file types of
 #' .csv, .tsv, .fe, yaml, & excel.
 #'
-#' Note that the `load_raw_cells()` variant enables an excel type to be loaded
+#' Note that the `read_raw_cells()` variant enables an excel type to be loaded
 #'  as xlsx_cells for further manipulation (e.g. via the brilliant unpivotr package).
 #'
 #' @name loaders
@@ -248,23 +248,23 @@ remove_old_version <- function(reg_type, name, source, ext) {
 #' @return A tibble.
 #'
 #' @export
-load_tidy <- function(name, append_source = FALSE, ...) {
+read_tidy <- function(name, append_source = FALSE, ...) {
   if (!is_registered(name, "tidy")) abort_unregistered(name, "tidy")
-  load_file(name, "tidy", append_source, ...)
+  read_file(name, "tidy", append_source, ...)
 }
 
 
 #' @export
 #' @rdname loaders
-load_raw <- function(name, append_source = FALSE, ...) {
+read_raw <- function(name, append_source = FALSE, ...) {
   if (!is_registered(name, "raw")) abort_unregistered(name, "raw")
-  load_file(name, "raw", append_source, ...)
+  read_file(name, "raw", append_source, ...)
 }
 
 #' @export
 #' @rdname loaders
 #' @importFrom tidyxl xlsx_cells
-load_raw_cells <- function(name, ...) {
+read_raw_cells <- function(name, ...) {
   if (!is_registered(name, "raw")) abort_unregistered(name, "raw")
   file <- get_register("raw") %>%
     dplyr::filter(.data$name == .env$name)
@@ -277,7 +277,7 @@ load_raw_cells <- function(name, ...) {
 
 #' @importFrom tools file_ext
 #' @import cli
-load_file <- function(name, reg_type, append_source, ...) {
+read_file <- function(name, reg_type, append_source, ...) {
   file <- get_register(reg_type) %>%
     dplyr::filter(.data$name == .env$name)
   source_dir <- get_source_dir(name, reg_type)
@@ -409,8 +409,8 @@ open_raw <- function(name) {
 
 #' @export
 open_config <- function(name) {
-  dir = file.path(get_root(), "model", "config")
-  if (file_has_no_ext(name)) name = guess_full_filename(name, dir)
+  dir <- file.path(get_root(), "model", "config")
+  if (file_has_no_ext(name)) name <- guess_full_filename(name, dir)
   path <- file.path(dir, name)
   if (!file.exists(path)) abort_file_not_found(path)
   open_external_file(path)
