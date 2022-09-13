@@ -1,6 +1,6 @@
 #' @export
 use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
-                   doc = FALSE, export = FALSE, use_func = TRUE) {
+                   doc = FALSE, export = FALSE, use_func = FALSE) {
   #  check args
   check_type(title, "character")
   check_type(subdir, "character")

@@ -224,7 +224,28 @@ add_to_gitignore <- function(f) {
 }
 
 #' @export
-excl_lg_files_from_git <- function() {
+exclude_lg_files <- function() {
   fs <- list.files("data", recursive = T, full.names = T)
   purrr::walk(fs, ~ if (is_over_100mb(.x)) add_to_gitignore(.x))
+}
+
+#' @export
+open_html <- function(name, ext = ".nb.html") {
+  name <- tools::file_path_sans_ext(name)
+  browseURL(file.path("html", paste0(name, ext)))
+}
+
+#' @export
+#' @inheritParams zibas zibasave
+export_fig <- function(...) {
+  path <- file.path(get_root(), "export/figures")
+  mkdir(path)
+  zibas::zibasave(path = path, ...)
+}
+
+
+#' @export
+reload_data <- function() {
+  .state$raw <- load_register("raw")
+  .state$tidy <- load_register("tidy")
 }

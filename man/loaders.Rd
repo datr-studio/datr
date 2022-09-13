@@ -26,6 +26,6 @@ data management system. If not, do that first. They can handle file types of
 .csv, .tsv, .fe, yaml, & excel.
 }
 \details{
-Note that the \code{load_raw_cells()} variant enables an excel type to be loaded
+Note that the \code{read_raw_cells()} variant enables an excel type to be loaded
 as xlsx_cells for further manipulation (e.g. via the brilliant unpivotr package).
 }

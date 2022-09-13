@@ -31,12 +31,12 @@ rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
     setwd(working_dir)
   }
 
+
+  options(pillar.print_min = 5)
+
   # Plot Settings
   library(zibas)
   make_beautiful_plots()
-  options("zibas.savepath" = file.path(root_dir, "export", "figures"))
-  options(pillar.print_min = 5)
-
   png_output <- function(..., res = 1080) {
     ragg::agg_png(..., res = res, units = "in")
   }

@@ -9,3 +9,9 @@ add_source = function(data, name) {
   check_type(data, "data.frame")
   data %>% mutate(source = name)
 }
+
+#' @export
+get_points = function(data, time_var = "year") {
+    filter(data, .data[[time_var]] == min(.data[[time_var]]) | .data[[time_var]] == max(.data[[time_var]]))
+}
+
