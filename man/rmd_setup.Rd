@@ -10,7 +10,8 @@ rmd_setup(
   validation = FALSE,
   figdir = "figures",
   png = TRUE,
-  pdf = FALSE
+  pdf = FALSE,
+  echo = FALSE
 )
 }
 \description{

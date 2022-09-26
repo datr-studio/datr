@@ -9,7 +9,7 @@
 #' @import glue
 #' @export
 rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
-                      figdir = "figures", png = TRUE, pdf = FALSE) {
+                      figdir = "figures", png = TRUE, pdf = FALSE, echo = FALSE) {
 
   # Rmd should always be in the folder "notebooks" under the main project folder, but can include a subdir
   root_dir <- get_root()
@@ -61,6 +61,7 @@ rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
   knitr::opts_chunk$set(
     warning = FALSE,
     message = FALSE,
+    echo = echo,
     out.width = out_width,
     fig.align = "center",
     dev = device,
