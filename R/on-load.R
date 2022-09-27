@@ -32,7 +32,7 @@ has_tidy_data <- function() {
 load_register <- function(reg_type) {
   reg <- paste0(".", reg_type, ".csv")
   filename <- file.path(get_root(), "data", reg)
-  vroom::vroom(filename, show_col_types = F)
+  vroom::vroom(filename, show_col_types = F, altrep = F)
 }
 
 get_register <- function(reg_type) {
