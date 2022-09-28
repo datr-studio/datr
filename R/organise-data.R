@@ -304,15 +304,25 @@ read_file <- function(name, reg_type, append_source, ...) {
 #' @importFrom yaml read_yaml
 #' @importFrom rvest read_html
 get_reader <- function(ext) {
+  vroom <- if (Sys.info()[["sysname"]] == "Windows") {
+    function(f, ...) {
+      vroom::vroom(f,
+        show_col_types = FALSE, altrep = use_altrep, ...
+      )
+    }
+  } else {
+    function(f, ...) {
+      vroom::vroom(f,
+        show_col_types = FALSE, ...
+      )
+    }
+  }
+
   switch(ext,
     "fe" = function(f, ...) feather::read_feather(f, ...),
-    "csv" = function(f, ...) {
-      vroom::vroom(f,
-        show_col_types = FALSE, altrep = Sys.info()[["sysname"]] != "Windows", ...
-      )
-    },
+    "csv" = , # nolint,
     "dat" = , # nolint,
-    "tsv" = function(f, ...) vroom::vroom(f, show_col_types = FALSE, ...),
+    "tsv" = function(f, ...) vroom(f, ...),
     "xls" = , # nolint
     "xlsx" = , # nolint
     "xlsm" = function(f, ...) readxl::read_excel(f, ...),
