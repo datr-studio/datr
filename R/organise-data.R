@@ -306,7 +306,11 @@ read_file <- function(name, reg_type, append_source, ...) {
 get_reader <- function(ext) {
   switch(ext,
     "fe" = function(f, ...) feather::read_feather(f, ...),
-    "csv" = function(f, ...) vroom::vroom(f, show_col_types = FALSE, ...),
+    "csv" = function(f, ...) {
+      vroom::vroom(f,
+        show_col_types = FALSE, altrep = Sys.info()[["sysname"]] != "Windows", ...
+      )
+    },
     "dat" = , # nolint,
     "tsv" = function(f, ...) vroom::vroom(f, show_col_types = FALSE, ...),
     "xls" = , # nolint
