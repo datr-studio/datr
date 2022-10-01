@@ -78,7 +78,7 @@ save_outputs <- function(data, name, subdir = NULL) {
 #' Save data to model config
 #'
 #' `save_config()` utilizes the power of a tidy project structure to save a data.frame
-#'  to the model congif folder.
+#'  to the model config folder.
 #'
 #' @param data A data.frame.
 #' @param filename Name to use for saved file. Must include a file extension that is
@@ -93,7 +93,7 @@ save_config <- function(data, filename, subdir = NULL) {
   ext <- tools::file_ext(filename)
   if (nchar(ext) == 0) abort_no_file_ext(filename)
   writer <- get_writer(ext)
-  paths <- c(get_root(), "model", "congif", subdir)
+  paths <- c(get_root(), "model", "config", subdir)
   base_path <- paste0(paths, collapse = .Platform$file.sep)
   mkdir(base_path)
   filepath <- file.path(base_path, filename)
