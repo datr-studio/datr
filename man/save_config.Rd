@@ -16,5 +16,5 @@ either a delim or feather file.}
 }
 \description{
 \code{save_config()} utilizes the power of a tidy project structure to save a data.frame
-to the model congif folder.
+to the model config folder.
 }

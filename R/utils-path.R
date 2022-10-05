@@ -19,6 +19,8 @@ get_root <- function() {
 
 set_root <- function() setwd(get_root())
 
+#' @export
+as_root <- function(...) file.path(get_root(), ...)
 
 #' @export
 from_dls <- function(f) {

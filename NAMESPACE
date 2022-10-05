@@ -3,6 +3,7 @@
 export(add_source)
 export(archive)
 export(as_perc)
+export(as_root)
 export(exclude_lg_files)
 export(export_fig)
 export(from_dls)
