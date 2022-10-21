@@ -5,7 +5,9 @@
 \alias{source_utils}
 \alias{source_r}
 \alias{source_model}
+\alias{source_app}
 \alias{source_math}
+\alias{source_globals}
 \alias{source_functions}
 \title{Source Helpers}
 \usage{
@@ -15,7 +17,11 @@ source_r(subdir = NULL, ...)
 
 source_model(subdir = NULL, ...)
 
+source_app(subdir = NULL, ...)
+
 source_math(subdir = NULL, ...)
+
+source_globals()
 
 source_functions(subdir = NULL, ...)
 }

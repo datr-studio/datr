@@ -26,3 +26,7 @@ mmd_to_pdf <- function(f, out_path = ".") {
   f_out <- paste0(basename, ".pdf")
   system(glue::glue("mmdc -i {f} -o {file.path(out_path, f_out)} -f"))
 }
+
+
+#' @export
+on_windows <- function() Sys.info()[["sysname"]] == "Windows"

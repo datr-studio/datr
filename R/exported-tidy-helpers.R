@@ -29,8 +29,20 @@ source_model <- function(subdir = NULL, ...) {
 
 #' @rdname source_helpers
 #' @export
+source_app <- function(subdir = NULL, ...) {
+  source_helper(file.path("app"), subdir, ...)
+}
+
+#' @rdname source_helpers
+#' @export
 source_math <- function(subdir = NULL, ...) {
   source_helper(file.path("math"), subdir, ...)
+}
+
+#' @rdname source_helpers
+#' @export
+source_globals <- function() {
+  source(as_root("config","globals.R"))
 }
 
 #' @rdname source_helpers
