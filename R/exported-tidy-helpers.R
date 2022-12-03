@@ -249,10 +249,10 @@ open_html <- function(name, ext = ".nb.html") {
 
 #' @export
 #' @inheritParams zibas zibasave
-export_fig <- function(plot = ggplot2::last_plot(), ...) {
+export_fig <- function(filename, plot = ggplot2::last_plot(), ...) {
   path <- file.path(get_root(), "export/figures")
   mkdir(path)
-  zibas::zibasave(path = path, plot = plot, ...)
+  zibas::zibasave(filename, path = path, plot = plot, ...)
 }
 
 
