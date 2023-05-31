@@ -322,7 +322,7 @@ get_reader <- function(ext) {
     "fe" = function(f, ...) feather::read_feather(f, ...),
     "csv" = , # nolint,
     "dat" = , # nolint,
-    "tsv" = function(f, ...) vroom(f, ...),
+    "tsv" = function(f, ...) vroom::vroom(f, ...),
     "xls" = , # nolint
     "xlsx" = , # nolint
     "xlsm" = function(f, ...) readxl::read_excel(f, ...),

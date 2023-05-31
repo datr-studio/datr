@@ -6,7 +6,7 @@ knit: (function(inputFile, encoding) {
                    output_file=file.path('html', paste0(filename, '.html')))})
 output:
   html_notebook:
-    css: "~/Projects/PROJECT_NAME/config/nb.css"
+    css: "~/Projects/PROJECT_NAME/templates/nb.css"
     code_folding: hide
     theme: cosmo
 ---

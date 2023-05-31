@@ -1,0 +1,15 @@
+---
+title: ""
+subtitle: "Subtitle"
+date: format(Sys.time(), "%d %M %Y")
+knit: (function(inputFile, encoding) {
+  filename = tools::file_path_sans_ext(basename(inputFile));
+  rmarkdown::render(inputFile,
+                   encoding=encoding,
+                   output_file=file.path('ppt', paste0(filename, '.pptx')))})
+output: 
+  powerpoint_presentation:
+    reference_doc: "templates/template.pptx"
+    toc: true
+    toc_depth: 1
+---

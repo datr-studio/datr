@@ -38,6 +38,8 @@ use_notebooks <- function(path = ".") {
   mkdir(file.path(path, "notebooks", "EDA"))
 }
 
+
+
 #' @export
 use_model <- function(path = ".") {
   mkdir(file.path(path, "model", "core"))

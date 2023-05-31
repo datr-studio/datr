@@ -3,5 +3,4 @@
 # DATA SCRIPTS GO HERE
 ```
 
-# Aim
-The aim of this notebook is to 
+

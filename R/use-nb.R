@@ -42,7 +42,7 @@ use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
   } else if (doc) {
     nb <- get_template("rmd-word-start.Rmd")
   } else {
-    css <- "    css: \"~/Projects/PROJECT_NAME/config/nb.css\"" %>%
+    css <- "    css: \"~/Projects/PROJECT_NAME/templates/nb.css\"" %>%
       str_repl("PROJECT_NAME", basename(root))
     nb <- get_template("rmd-html-start.Rmd") %>%
       replace_line(9, css)
