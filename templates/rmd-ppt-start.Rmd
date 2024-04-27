@@ -6,10 +6,10 @@ knit: (function(inputFile, encoding) {
   filename = tools::file_path_sans_ext(basename(inputFile));
   rmarkdown::render(inputFile,
                    encoding=encoding,
-                   output_file=file.path('ppt', paste0(filename, '.pptx')))})
+                   output_file=file.path('html', paste0(filename, '.html')))})
 output: 
-  powerpoint_presentation:
-    reference_doc: "templates/template.pptx"
-    toc: true
-    toc_depth: 1
+  html_notebook:
+    css: "~/Projects/wmh-monitoring/config/nb.css"
+    code_folding: hide
+    theme: cosmo
 ---

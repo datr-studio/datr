@@ -13,12 +13,15 @@ rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
                       echo = FALSE) {
 
   # Rmd should always be in the folder "notebooks" under the main project folder, but can include a subdir
+
   root_dir <- get_root()
   if (export) {
     folder <- "export"
   } else if (validation) {
     folder <- "validation/analysis"
-  } else {
+  } else if(ppt) {
+    folder = "presos"
+  }else {
     folder <- "notebooks"
   }
   working_dir <- file.path(root_dir, folder, subdir)
@@ -31,7 +34,6 @@ rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
     if (interactive()) cli::cli_alert_info("Notebook path was changed to {.path {working_dir}}")
     setwd(working_dir)
   }
-
 
   options(pillar.print_min = 5)
 
@@ -59,6 +61,7 @@ rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
     out_width <- "100%"
   }
 
+
   knitr::opts_chunk$set(
     warning = FALSE,
     message = FALSE,
@@ -70,9 +73,11 @@ rmd_setup <- function(subdir = "", export = FALSE, validation = FALSE,
     fig.height = 6
   )
 
-  if (!ppt) knitr::opts_chunk$set(
-    fig.align = "center",
-  )
+  if (!ppt) {
+    knitr::opts_chunk$set(
+      fig.align = "center"
+    )
+  }
 
   if (interactive()) {
     cli::cli_inform(

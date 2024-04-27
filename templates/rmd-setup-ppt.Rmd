@@ -1,0 +1,15 @@
+
+```{r setup, include=FALSE}
+library(datr)
+library(tidyverse)
+library(glue)
+library(zibas)
+library(impreso)
+rmd_setup("")
+make_impreso_plots()
+```
+
+```{r globals, include = FALSE}
+# GLOBALS GO HERE
+source(as_root("presos/functions/ppt-builder.R"))
+```

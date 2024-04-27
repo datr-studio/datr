@@ -1,5 +1,5 @@
 #' @export
-use_ppt <- function(title, subdir = "EDA", filename = NULL, use_func = FALSE) {
+use_ppt <- function(title, subdir = "", filename = NULL) {
   #  check args
   check_type(title, "character")
   check_type(subdir, "character")
@@ -8,16 +8,15 @@ use_ppt <- function(title, subdir = "EDA", filename = NULL, use_func = FALSE) {
 
   # Confirm base path exists
   root <- get_root()
-  path <- file.path(root, "notebooks")
-  if (!dir.exists(path)) use_notebooks(root)
-  rmd_setup_params <- paste0("\"", subdir, "\"")
+  path <- file.path(root, "presos")
+  if (!dir.exists(path)) use_presos(root)
 
+  rmd_setup_params <- ifelse(subdir != "", paste0("\"", subdir, "\""), "")
   path <- file.path(path, subdir)
   mkdir(path)
 
 
   # Build subdir context
-  if (use_func) mkdir(file.path(path, "functions"))
   mkdir(file.path(path, "figures"))
   mkdir(file.path(path, "ppt"))
 
@@ -26,10 +25,9 @@ use_ppt <- function(title, subdir = "EDA", filename = NULL, use_func = FALSE) {
 
   nb <- nb %>%
     replace_line(2, paste0("title: ", title)) %>%
-    append_lines(get_template("rmd-setup.Rmd") %>%
-      replace_line(7, paste0("rmd_setup(", rmd_setup_params, ", pdf = T)")))
+    append_lines(get_template("rmd-setup-ppt.Rmd") %>%
+      replace_line(8, paste0("rmd_setup(", rmd_setup_params, ", ppt = T)")))
 
-  if (use_func) nb <- append_lines(nb, get_template("rmd-func.Rmd"))
   nb <- append_lines(nb, get_template("rmd-base-end.Rmd"))
   write_file(nb, file.path(path, filename))
 }

@@ -38,6 +38,10 @@ use_notebooks <- function(path = ".") {
   mkdir(file.path(path, "notebooks", "EDA"))
 }
 
+#' @export
+use_presos <- function(path = ".") {
+  mkdir(file.path(path, "presos", "EDA"))
+}
 
 
 #' @export

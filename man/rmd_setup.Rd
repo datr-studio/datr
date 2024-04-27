@@ -11,6 +11,7 @@ rmd_setup(
   figdir = "figures",
   png = TRUE,
   pdf = FALSE,
+  ppt = FALSE,
   echo = FALSE
 )
 }
