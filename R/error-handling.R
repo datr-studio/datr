@@ -118,13 +118,7 @@ warn_no_desc <- function() {
 }
 
 warn_no_data <- function() {
-  cli::cli_alert_danger("{.pkg datr} requires a tidy project structure to work correctly.")
-  msg <- cli::format_inline("Continuing will set up tidy data now.")
-  if (confirm_action(msg)) {
-    use_tidy_data()
-  } else {
-    stop_quietly()
-  }
+  cli::cli_alert_danger("{.pkg datr} requires a tidy project structure to work correctly. Run use_tidy_data() to fix this.")
 }
 
 warn_skipping_dir <- function(name) {

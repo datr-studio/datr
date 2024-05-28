@@ -1,6 +1,3 @@
-
-
-
 #' Search the registers
 #'
 #' Look up a key word in both registers
@@ -19,13 +16,13 @@ search_data <- function(name) {
 }
 
 search_raw <- function(name) {
-  .state$raw %>%
+  .state$raw |>
     dplyr::filter(in_str(tolower(.data$name), .env$name))
 }
 
 
 search_tidy <- function(name) {
-  .state$tidy %>%
+  .state$tidy |>
     dplyr::filter(in_str(tolower(.data$name), .env$name))
 }
 
@@ -47,12 +44,12 @@ search_source <- function(source) {
 }
 
 search_source_raw <- function(source) {
-  .state$raw %>%
+  .state$raw |>
     dplyr::filter(in_str(tolower(.data$source), .env$source))
 }
 
 
 search_source_tidy <- function(source) {
-  .state$tidy %>%
+  .state$tidy |>
     dplyr::filter(in_str(tolower(.data$source), .env$source))
 }

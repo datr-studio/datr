@@ -12,9 +12,12 @@
 
 .onLoad <- function(libname, pkgname) { # nolint
   if (!has_desc()) warn_no_desc()
-  if (!has_tidy_data()) warn_no_data()
-  .state$raw <- load_register("raw")
-  .state$tidy <- load_register("tidy")
+  if (!has_tidy_data()) {
+    warn_no_data()
+  } else {
+    .state$raw <- load_register("raw")
+    .state$tidy <- load_register("tidy")
+  }
 }
 
 

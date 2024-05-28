@@ -12,15 +12,16 @@
 #'
 #' @importFrom tools file_ext
 #' @export
-save_raw <- function(filepath, source, url = NA_character_, force = FALSE) {
+save_raw <- function(filepath, source, url = NA_character_, force = FALSE, from_dls = TRUE) {
   check_type(filepath, "character")
   check_type(source, "character")
+
+  if (from_dls) filepath <- from_dls(filepath)
 
   if (file_has_no_ext(filepath)) {
     basename <- basename(filepath)
     dir <- str_rem(filepath, basename)
-    if (dir == "") dir <- "~/Downloads"
-    filepath <- guess_full_filename(filepath, dir)
+    filepath <- guess_full_filename(basename, dir)
   }
 
   if (!file.exists(filepath)) {
@@ -156,14 +157,14 @@ append_to_register <- function(reg_type, name, source, ext, url = NA_character_,
       abort_non_unique_name(name, reg_type)
     } else {
       # Check that the sources match. If not, this is accidental.
-      current_source <- reg %>%
-        dplyr::filter(.data$name == .env$name) %>%
+      current_source <- reg |>
+        dplyr::filter(.data$name == .env$name) |>
         dplyr::pull(source)
       if (current_source != source) {
         abort_non_unique_name_diff_sources(name, reg_type, current_source, source)
       }
-      current_ext <- reg %>%
-        dplyr::filter(.data$name == .env$name) %>%
+      current_ext <- reg |>
+        dplyr::filter(.data$name == .env$name) |>
         dplyr::pull(ext)
       if (current_ext != ext) {
         change_tidy_ext(name, ext)
@@ -172,12 +173,12 @@ append_to_register <- function(reg_type, name, source, ext, url = NA_character_,
     }
   } else {
     if (reg_type == "raw") {
-      reg %>%
-        tibble::add_row(name = name, source = source, ext = ext, url = url) %>%
+      reg |>
+        tibble::add_row(name = name, source = source, ext = ext, url = url) |>
         update_register(reg_type)
     } else {
-      reg %>%
-        tibble::add_row(name = name, source = source, ext = ext) %>%
+      reg |>
+        tibble::add_row(name = name, source = source, ext = ext) |>
         update_register(reg_type)
     }
   }
@@ -199,8 +200,8 @@ remove_data <- function(name, reg_type) {
     warn_unregistered(name, reg_type)
   } else {
     unlink(get_filepath(name, reg_type))
-    get_register(reg_type) %>%
-      dplyr::filter(.data$name != .env$name) %>%
+    get_register(reg_type) |>
+      dplyr::filter(.data$name != .env$name) |>
       update_register(reg_type)
     cli::cli_alert_success("{.val {name}} has been removed from {reg_type} data.")
     organise_file_tree(reg_type)
@@ -216,8 +217,8 @@ remove_tidy <- function(name) remove_data(name, "tidy")
 remove_raw <- function(name) remove_data(name, "raw")
 
 change_tidy_ext <- function(data_name, new_ext) {
-  get_register("tidy") %>%
-    mutate(ext = ifelse(name == data_name, new_ext, ext)) %>%
+  get_register("tidy") |>
+    mutate(ext = ifelse(name == data_name, new_ext, ext)) |>
     update_register("tidy")
 }
 
@@ -266,7 +267,7 @@ read_raw <- function(name, append_source = FALSE, ...) {
 #' @importFrom tidyxl xlsx_cells
 read_raw_cells <- function(name, ...) {
   if (!is_registered(name, "raw")) abort_unregistered(name, "raw")
-  file <- get_register("raw") %>%
+  file <- get_register("raw") |>
     dplyr::filter(.data$name == .env$name)
   source_dir <- get_source_dir(name, "raw")
   filepath <- file.path(
@@ -278,7 +279,7 @@ read_raw_cells <- function(name, ...) {
 #' @importFrom tools file_ext
 #' @import cli
 read_file <- function(name, reg_type, append_source, ...) {
-  file <- get_register(reg_type) %>%
+  file <- get_register(reg_type) |>
     dplyr::filter(.data$name == .env$name)
   source_dir <- get_source_dir(name, reg_type)
   filepath <- file.path(
@@ -445,16 +446,16 @@ open_data_with_system <- function(name, reg_type) {
 #'
 #' @export
 standardise_filename <- function(x) {
-  str_repl(x, " ", "-") %>%
-    str_repl("_", "-") %>%
+  str_repl(x, " ", "-") |>
+    str_repl("_", "-") |>
     tolower()
 }
 
 #' @importFrom purrr walk map_chr
 organise_file_tree <- function(reg_type, source) {
   # Make dir for each source in register
-  sources <- get_register(reg_type) %>%
-    dplyr::pull(source) %>%
+  sources <- get_register(reg_type) |>
+    dplyr::pull(source) |>
     unique()
   purrr::walk(sources, create_source_dir, reg_type)
   # Remove any dirs not associated with a source
@@ -479,15 +480,15 @@ remove_source_dir <- function(source, reg_type) {
 }
 
 get_source_dir <- function(name, reg_type) {
-  get_register(reg_type) %>%
-    filter(.data$name == .env$name) %>%
-    dplyr::pull(source) %>%
+  get_register(reg_type) |>
+    filter(.data$name == .env$name) |>
+    dplyr::pull(source) |>
     standardise_filename()
 }
 #' @importFrom dplyr pull
 get_ext <- function(name, reg_type) {
-  get_register(reg_type) %>%
-    filter(.data$name == .env$name) %>%
+  get_register(reg_type) |>
+    filter(.data$name == .env$name) |>
     dplyr::pull(ext)
 }
 
@@ -508,7 +509,7 @@ is_valid_source <- function(source, reg_type) {
 }
 
 get_metadata <- function(name, reg_type) {
-  get_register(reg_type) %>%
+  get_register(reg_type) |>
     dplyr::filter(.data$name == .env$name)
 }
 

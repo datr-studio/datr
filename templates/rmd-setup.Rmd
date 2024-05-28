@@ -4,6 +4,7 @@ library(datr)
 library(tidyverse)
 library(glue)
 library(zibas)
+library(reptools)
 rmd_setup("")
 ```
 

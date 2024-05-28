@@ -42,15 +42,15 @@ use_nb <- function(title, subdir = "EDA", filename = NULL, pdf = FALSE,
   } else if (doc) {
     nb <- get_template("rmd-word-start.Rmd")
   } else {
-    css <- "    css: \"~/Projects/PROJECT_NAME/templates/nb.css\"" %>%
+    css <- "    css: \"~/Projects/PROJECT_NAME/templates/nb.css\"" |>
       str_repl("PROJECT_NAME", basename(root))
-    nb <- get_template("rmd-html-start.Rmd") %>%
+    nb <- get_template("rmd-html-start.Rmd") |>
       replace_line(9, css)
   }
-  nb <- nb %>%
-    replace_line(2, paste0("title: ", title)) %>%
-    append_lines(get_template("rmd-setup.Rmd") %>%
-      replace_line(7, paste0("rmd_setup(", rmd_setup_params, ")")))
+  nb <- nb |>
+    replace_line(2, paste0("title: ", title)) |>
+    append_lines(get_template("rmd-setup.Rmd") |>
+      replace_line(8, paste0("rmd_setup(", rmd_setup_params, ")")))
   if (use_func) nb <- append_lines(nb, get_template("rmd-func.Rmd"))
   nb <- append_lines(nb, get_template("rmd-base-end.Rmd"))
   write_file(nb, file.path(path, filename))

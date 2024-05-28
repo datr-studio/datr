@@ -1,7 +1,7 @@
 #' @export
 use_desc <- function(proj_name, path = ".") {
-  get_template("DESCRIPTION") %>%
-    replace_line(1, paste0("Package: ", proj_name)) %>%
+  get_template("DESCRIPTION") |>
+    replace_line(1, paste0("Package: ", proj_name)) |>
     write_file(file.path(path, "DESCRIPTION"))
 }
 

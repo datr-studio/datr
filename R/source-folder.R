@@ -15,24 +15,6 @@
 #' @importFrom stringr str_detect
 #' @importFrom rlang expr_text
 #'
-#' @examples
-#' \dontrun{
-#' # Source everything in R folder
-#' source_folder("R")
-#'
-#' # Source everything that starts with "app_"
-#' source_folder("R", incl = "app_")
-#'
-#' # Source everything that doesn't start with "app_"
-#' source_folder("R", excl = "app_")
-#'
-#' # Source with full output (useful for debuging)
-#' source_folder("R", verbose = TRUE)
-#'
-#' # Source and warn only if errors
-#' source_folder("R", stop_on_error = FALSE)
-#' }
-#'
 source_folder <- function(folder, incl = NULL, excl = NULL, silent = FALSE, verbose = FALSE, stop_on_error = TRUE) {
   reset_state()
   check_type(folder, "character")

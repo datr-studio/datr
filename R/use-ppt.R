@@ -23,9 +23,9 @@ use_ppt <- function(title, subdir = "", filename = NULL) {
   # build nb
   nb <- get_template("rmd-ppt-start.Rmd")
 
-  nb <- nb %>%
-    replace_line(2, paste0("title: ", title)) %>%
-    append_lines(get_template("rmd-setup-ppt.Rmd") %>%
+  nb <- nb |>
+    replace_line(2, paste0("title: ", title)) |>
+    append_lines(get_template("rmd-setup-ppt.Rmd") |>
       replace_line(8, paste0("rmd_setup(", rmd_setup_params, ", ppt = T)")))
 
   nb <- append_lines(nb, get_template("rmd-base-end.Rmd"))

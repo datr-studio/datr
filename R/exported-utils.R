@@ -1,18 +1,7 @@
 #' @export
-relative_change <- function(from, to, as_perc = TRUE, invert = FALSE, ...) {
-  invert_mod <- ifelse(invert, -1, 1)
-  out <- (to - from) / from * invert_mod
-  if (as_perc) out <- as_perc(out, ...)
-  out
-}
-
-#' @export
-as_perc <- function(x, digits = 1) paste0(round(x * 100, digits), "%")
-
-#' @export
 add_source <- function(data, name) {
   check_type(data, "data.frame")
-  data %>% mutate(source = name)
+  data |> mutate(source = name)
 }
 
 #' @export
