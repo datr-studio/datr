@@ -29,22 +29,3 @@ source_folder(
 \description{
 Recursively source a folder, loading all files with .R ext into the global environment.
 }
-\examples{
-\dontrun{
-# Source everything in R folder
-source_folder("R")
-
-# Source everything that starts with "app_"
-source_folder("R", incl = "app_")
-
-# Source everything that doesn't start with "app_"
-source_folder("R", excl = "app_")
-
-# Source with full output (useful for debuging)
-source_folder("R", verbose = TRUE)
-
-# Source and warn only if errors
-source_folder("R", stop_on_error = FALSE)
-}
-
-}

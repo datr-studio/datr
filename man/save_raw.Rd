@@ -4,7 +4,7 @@
 \alias{save_raw}
 \title{Save Raw Data}
 \usage{
-save_raw(filepath, source, url = NA_character_, force = FALSE)
+save_raw(filepath, source, url = NA_character_, force = FALSE, from_dls = TRUE)
 }
 \arguments{
 \item{filepath}{Path to file to add.}

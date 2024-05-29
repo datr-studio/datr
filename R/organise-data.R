@@ -523,3 +523,9 @@ open_external_file <- function(path) {
   }
   cli::cli_alert_success("{.path {path}} has been opened with the system viewer.")
 }
+
+#' @export
+refresh_data_records <- function() {
+    .state$raw <- load_register("raw")
+    .state$tidy <- load_register("tidy")
+}
